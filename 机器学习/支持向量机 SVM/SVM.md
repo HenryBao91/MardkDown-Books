@@ -1,4 +1,4 @@
-#<center>支持向量机 SVM</center>
+# 支持向量机 SVM
 
 ## 1、感知机
 
