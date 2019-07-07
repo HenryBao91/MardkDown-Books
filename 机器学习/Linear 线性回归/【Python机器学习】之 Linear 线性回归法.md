@@ -62,11 +62,11 @@
 
    考虑到所有样本，即误差可能出现正负误差相抵的情况，所以采用误差平方和：
 
-$$\sum_{i=1}^m(y^{(i)}  - \hat y^{(i)})^2$$ 
+​                                                           $$\sum\limits_{i=1}^m(y^{(i)}  - \hat y^{(i)})^2$$ 
 
 ​	**目标**：使上式尽可能的小，结合预测直线方程，可得：
 
-即，使 $$\sum_{i=1}^m (\ y^{(i)}  - ax^{(i)}+b \ )^2$$ 尽可能小，该式也叫损失函数（Loss Function）
+即，使 $$\sum\limits_{i=1}^m (\ y^{(i)}  - ax^{(i)}+b \ )^2$$ 尽可能小，该式也叫损失函数（Loss Function）
 
 > 求最大值的叫 效用函数（Utility Function）
 
@@ -90,7 +90,7 @@ $$\sum_{i=1}^m(y^{(i)}  - \hat y^{(i)})^2$$
 
  <font color=#FF0000>典型的最小二乘法问题：**最小误差的平方**</font>
 
-求$$J(a,b)=\sum_{i=1}^m(y^{(i)} - ax^{(i)}  - b)^2$$最小值，采用链式求导法则
+求$$J(a,b)=\sum\limits_{i=1}^m(y^{(i)} - ax^{(i)}  - b)^2$$最小值，采用链式求导法则
 $$
 \begin{cases}
 \frac{\partial J(a,b)}{\partial a}= 0  \\
