@@ -1,4 +1,4 @@
-﻿# <center>Linear 线性回归算法</center>
+# <center>Linear 线性回归算法</center>
 
 &#8195;&#8195;回归分析是一种预测性建模技术，主要用来研究因变量（$y_i$）和自变量（$x_i$）之间关系，通常被用于预测分析、时间序列等。
 
@@ -6,16 +6,20 @@
 
 &#8195;&#8195;假设一个**房价-房屋面积**数据信息情况如下图蓝点，通过线性回归方法拟合得到**房价-房屋面积**之间的线性关系，从而进行预测。
 
+<center><img src="https://img-blog.csdnimg.cn/20190706175223576.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmd6aGVuOTE=,size_16,color_FFFFFF,t_70">
 
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20190706175223576.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmd6aGVuOTE=,size_16,color_FFFFFF,t_70)
+&#8195;	
 
-&#8195;&#8195;&#8195;线性回归与之前 kNN 算法区别，即分类问题和回归问题区别：
-![在这里插入图片描述](https://img-blog.csdnimg.cn/20190706175232934.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmd6aGVuOTE=,size_16,color_FFFFFF,t_70)
+&#8195;	线性回归与之前 kNN 算法区别，即分类问题和回归问题区别：
 
-​		在上图左边 kNN 算法，右边线性回归算法。两者在数据上有不同的特征：kNN算法中，横纵坐标均代表样本特征，样本点的颜色代表样本的分类；而线性回归中横坐标代表样本特征，纵坐标代表样本对应的标记值。
+<center><img src="https://img-blog.csdnimg.cn/20190706175232934.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmd6aGVuOTE=,size_16,color_FFFFFF,t_70">
 
 <br/>
 
+​		在上图左边 kNN 算法，右边线性回归算法。两者在数据上有不同的特征：kNN算法中，横纵坐标均代表样本特征，样本点的颜色代表样本的分类；而线性回归中横坐标代表样本特征，纵坐标代表样本对应的标记值。
+
+
+<br/>
 
 
 ## 1、线性回归算法
@@ -425,32 +429,37 @@ $$
 
 ### 3.2、多元回归推导：
 
-求解多元线性回归
+​	求解多元线性回归
 $$
 目标： 使 \sum_{i=1}^m(y^{(i)} - \hat y^{(i)})^2 尽可能小
 $$
-$$\hat y^{(i)} = \theta_0 + \theta_1X_1^{(1)} + \theta_2X_2^{(2)} +... + \theta_nX_n^{(i)}$$
-$$ \theta = ( \theta_0 ,  \theta_1 , ... ,  \theta_n)^T  
+$$
+\hat y^{(i)} = \theta_0 + \theta_1X_1^{(1)} + \theta_2X_2^{(2)} +... + \theta_nX_n^{(i)}
 $$
 
 $$
-其中，\theta_0 为 截距， \theta_1 , ... ,  \theta_n 为系数
+\theta = ( \theta_0 ,  \theta_1 , ... ,  \theta_n)^T
 $$
-所以，目标：$$
- 找到 \ \theta_0 ,  \theta_1 , ... ,  \theta_n ，使得 \sum_{i=1}^m(y^{(i)} - \hat y^{(i)})^2 尽可能小
-$$
-$$ X = ( X_0 , X_1 , ... ,  X_n)  \quad , \ X_0 \equiv 1$$
-所以，最终可得：
+​	其中，$\theta_0$ 为 截距， $\theta_1 , ... ,  \theta_n$ 为系数
 
+​	所以，目标：
 $$
-        \begin{pmatrix}
+找到 \ \theta_0 ,  \theta_1 , ... ,  \theta_n ，使得 \sum_{i=1}^m(y^{(i)} - \hat y^{(i)})^2 尽可能小
+$$
+
+
+​	所以，最终可得：
+$$
+\begin{pmatrix}
         1 & X^{(1)}_1 & X^{(1)}_1 & \cdots & X^{(1)}_1   \\
         1 & X^{(2)}_1 & X^{(2)}_2 & \cdots & X^{(2)}_2   \\
         \vdots & \vdots & \vdots & \ddots & \vdots   \\
         1 & X^{(m)}_1 & X^{(m)}_2 & \cdots & X^{(m)}_n   \\
         \end{pmatrix}
 $$
-$$ \hat y = X^{(i)} \cdot \theta$$
+$$
+\hat y = X^{(i)} \cdot \theta
+$$
 
 
 $$
@@ -459,7 +468,7 @@ $$
 $$
 目标： 使 (y - X_b \cdot \theta)^T \cdot  (y - X_b \cdot \theta) 尽可能小
 $$
-应用最小二乘法，最终得：
+​	应用最小二乘法，最终得：
 
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/201907061755413.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmd6aGVuOTE=,size_16,color_FFFFFF,t_70)
 
