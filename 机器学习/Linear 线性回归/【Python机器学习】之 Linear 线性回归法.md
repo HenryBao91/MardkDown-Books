@@ -600,4 +600,3 @@ $$ \theta = (X_b^TX_b)^{-1}X_b^T y $$
 > 文中实例参考：
 > + 贪心学院，[https://www.greedyai.com](https://www.greedyai.com)
 > + 刘宇波老师《Python入门机器学习》
-
