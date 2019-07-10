@@ -91,7 +91,7 @@ L({\mathbf {w,b}}) = -\frac{1}{||\mathbf w||_2 \cdot } \cdot \sum\limits_{x_i \i
 $$
 所以，当所有错误分类点到超平面的距离最小的时候，损失函数是最小的，这是得到的模型是最优的，而又因为所有样本点到超平面的距离公式中分母$||\mathbf w||_2$是相同的，所以公式（7）的**损失函数**最终可变形为：
 $$
-L({\mathbf {w,b}}) = - \sum\limits_{x_i \in M} y_i\cdot ( \mathbf {w^Tx + b} )
+L({\mathbf {w,b}}) = - \sum\limits_{\mathbf x_i \in M} y_i\cdot ( \mathbf {w^Tx + b} )
 $$
 
 ### 1.3、感知机模型求解
@@ -99,16 +99,26 @@ $$
 对于求解感知机最优模型的问题转换为最优解，即求损失函数的最小值时对应的参数即为模型参数，采用梯度下降法进行求解，分别对参数求偏导：
 $$
 \begin{cases}
-\frac{\partial L(\mathbf {w, b})}{\partial \mathbf w}= 0  \\
+\frac{\partial L(\mathbf {w, b})}{\partial \mathbf w}= -\sum\limits_{x_i \in M}y_i\mathbf x_i  \\
 \\
-\frac{\partial L(\mathbf {w, b})}{\partial \mathbf b}= 0  \\
+\frac{\partial L(\mathbf {w, b})}{\partial \mathbf b} = -\sum\limits_{x_i \in M}y_i  \\
 \end{cases}
+\\
+其中， \mathbf w = (w_1, w_2 ,..., w_n) 是各个特征对应的权重向量 ；\quad
+\mathbf x_i = (x^{(i)}_1, x^{(i)}_2 ,..., x^{(i)}_n)
 $$
 
+求解过程即每次随机选取一个误分类样本点$（x_i , y_i）$，对$\mathbf {w, b}$ 进行一次更新，迭代计算公式如下：
+$$
+\mathbf w^{‘} \leftarrow  \mathbf w + \eta y_i\mathbf x_i   \\
+\mathbf b^{‘} \leftarrow \mathbf b + \eta y_i
+$$
+其中，$0 ≤ \eta ≤ 1$是算法的学习率，即步长。通过梯度下降法不停迭代使得损失函数$L({\mathbf {w,b}})$快速地不断减小，直到满足要求。
 
-
-
- 
+> **注意：**感知机模型有两个问题：
+>
+> 1. 使用前提是数据集必须为线性可分，当数据集线性不可分的时候，感知记得学习算法不收敛，迭代过程会发生震荡；
+> 2. 感知机模型仅适用于二分类问题，在实际应用中存在一定限制。
 
 
 
