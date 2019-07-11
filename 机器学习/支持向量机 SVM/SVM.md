@@ -66,16 +66,52 @@ $$
 $$
 则，拓展到 n 维空间中，$\mathbf {w^Tx + b} = 0$，点到直线的距离为：
 $$
-d^{\ '} = \frac{| \mathbf {w^Tx + b} |}{ ||\mathbf w||_2} \quad , \quad ||\mathbf w|| = \sqrt{w_1^2 + w_2^2 + ... +w_n^2 }
+d = d^{\ '} = \frac{| \mathbf {w^Tx + b} |}{ ||\mathbf w||_2} \quad , \quad ||\mathbf w|| = \sqrt{w_1^2 + w_2^2 + ... +w_n^2 }
 $$
 其中，$||\mathbf w||_2$也叫“L2范数”，也就是模。
 
-对于公式（3）可得；
+![在这里插入图片描述](E:\MardkDown-Books\机器学习\支持向量机 SVM\SVM.assets\20190709213821823.png)
 
-- 对于分类正确的样本点，有 $y_i ( \mathbf{w^Tx + b} ) > 0$ 恒成立，即：
-  - $ y_i = +1$时，有$\mathbf{w^Tx + b}>0$ ;
+所以，对于数据集的样本点，有：
+$$
+\begin{cases}
+\ \frac{| \mathbf {w^Tx + b} |}{ ||\mathbf w||_2} ≥ d  ,\  \forall y^{(i)} = +1  \\
+\\
+\ \frac{| \mathbf {w^Tx + b} |}{ ||\mathbf w||_2} ≥ d  ,\ \forall y^{(i)} = -1  \\
+\end{cases}
+$$
+将上式分子分母同时除以$d$，可得：
+$$
+\begin{cases}
+\ \frac{| \mathbf {w^Tx + b} |}{ ||\mathbf w||_2d} ≥ 1  ,\  \forall y^{(i)} = +1  \\
+\\
+\ \frac{| \mathbf {w^Tx + b} |}{ ||\mathbf w||_2d} ≤ -1  ,\ \forall y^{(i)} = -1  \\
+\end{cases}
+$$
+​	令$\ \mathbf {w^T_d } = \frac{| \mathbf {w^T} |}{ ||\mathbf w||_2d} , \  \mathbf {b_d} = \frac{| \mathbf {b} |}{ ||\mathbf w||_2d}$ ，所以，可得下式：
+$$
+\begin{cases}
+\ \mathbf {w^T_dx + b_d } ≥ 1  ,\  \forall y^{(i)} = +1  \\
+\\
+\ \mathbf {w^T_dx + b_d } ≤ -1  ,\ \forall y^{(i)} = -1  \\
+\end{cases}
+$$
+不妨令$\mathbf {w = w^T_d } \, \ \mathbf {b = b_d }$ ，所以：
+$$
+\begin{cases}
+\ \mathbf {w^Tx + b } ≥ 1  ,\  \forall y^{(i)} = +1  \\
+\\
+\ \mathbf {w^Tx + b } ≤ -1  ,\ \forall y^{(i)} = -1  \\
+\end{cases}
+$$
+
+
+对于公式（6）可得；
+
+- 对于分类正确的样本点，有 $y_i ( \mathbf{w^Tx + b} ) ≥1 > 0$ 恒成立，即：
+  - $ y_i = +1$时，有$\mathbf{w^Tx + b} >0$ ;
   - $ y_i = -1$时，有$\mathbf{w^Tx + b}<0$ 。
-- 对于分类错误的样本点，有 $y_i ( \mathbf{w^Tx + b} ) < 0$ 恒成立，即:
+- 对于分类错误的样本点，有 $y_i ( \mathbf{w^Tx + b} ) ≤ -1 < 0$ 恒成立，即:
   - $ y_i = +1$时，有$\mathbf{w^Tx + b}<0$  ;
   - $ y_i = -1$时，有$\mathbf{w^Tx + b}>0$ 。
 
@@ -122,6 +158,22 @@ $$
 
 
 
+## 2、支持向量机
+
+由上述可知感知机模型，即**在数据集线性可分的条件下**，利用分割超平面$\mathbf {w\cdot x} + \mathbf b = 0$ 把样本点划分为两类，通过计算误分类点距离超平面距离总和作为损失函数，使其最小化从而调整超平面，直至所有误分类点被纠正正确后迭代结束。
+
+因为$\mathbf {w ，b} $的取值不同，所以得到的分割超平面也可能不相同，所以感知机模型得到的超平面可能有多个。那么，支持向量机模型就是找到一个最优的分割超平面。
+
+**SVM模型和感知机模型一样**。<font color=#a0000>**SVM模型的方法是：不仅要让样本点被分割超平面分开，还希望那些离分割超平面最近的点到分割超平面的距离最小。**</font>
+
+支持向量机分为两种：硬间隔支持向量机和软间隔支持向量机。
+
+### 2.1、硬间隔支持向量机
+
+#### 2.1.1、求解硬间隔支持向量机
+
+输入：线性可分训练集$T={()}$
+
 
 
 
@@ -131,10 +183,6 @@ $$
 ---
 
 
-$$
-\begin{cases}
-\ \frac{| \mathbf {w^Tx + b} |}{ ||\mathbf w||_2} ≥ d  ,\ y^{(i)} \forall +1  \\
-\\
-\ \frac{| \mathbf {w^Tx + b} |}{ ||\mathbf w||_2} ≥ d  ,\ y^{(i)} \forall -1  \\
-\end{cases}
-$$
+
+
+
