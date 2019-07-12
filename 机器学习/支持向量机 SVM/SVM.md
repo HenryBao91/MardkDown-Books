@@ -2,6 +2,8 @@
 
 # 支持向量机 SVM
 
+支持向量机（SVM）是一个功能强大并且全面的机器学习模型，它能够执行线性或非线性分类问题、回归问题，甚至是异常值检测任务。
+
 ## 1、感知机
 
 ### 1.1、感知机模型
@@ -166,13 +168,301 @@ $$
 
 **SVM模型和感知机模型一样**。<font color=#a0000>**SVM模型的方法是：不仅要让样本点被分割超平面分开，还希望那些离分割超平面最近的点到分割超平面的距离最小。**</font>
 
+SVM 和 线性分类器对比如下：
+
+![在这里插入图片描述](E:\MardkDown-Books\机器学习\支持向量机 SVM\SVM.assets\20190712223852125.png)
+
 支持向量机分为两种：硬间隔支持向量机和软间隔支持向量机。
 
-### 2.1、硬间隔支持向量机
 
-#### 2.1.1、求解硬间隔支持向量机
 
-输入：线性可分训练集$T={()}$
+</br>
+
+### 2.1、求解硬间隔支持向量机
+
+输入：线性可分训练集$T=\{ (\mathbf x_1 ,y_1) ,(\mathbf x_2 ,y_2), ..., (\mathbf x_n ,y_n) \}$，且$y_i \in \{-1,1\} $。
+
+输出：分割超平面$\mathbf {w^* \cdot x + b^*} = 0$ 和分类决策函数 $h(\mathbf x) =sign(\mathbf {w^Tx + b})$。
+
+求解步骤：
+
+1. 构造约束优化问题.
+   $$
+   \min_{\alpha} \ \frac{1}{2} \cdot \sum\limits_{i=1}^M \alpha_i \alpha_j y_i y_j (\mathbf x_i \cdot \mathbf x_j) - \sum\limits_{i=1}^M \alpha_i  \\
+   s.t.  \quad  \sum\limits_{i=1}^M \alpha_iy_i = 0  \quad(s.t. 意思是使得...满足...)   \\
+   \alpha_i ≥ 0 , i=1,2,...,M
+   $$
+
+2. 利用SMO算法求解上面的优化问题，得到$ \mathbf {\alpha}$向量的值$\mathbf {\alpha^*}$,$\alpha = (\alpha_1, \alpha_2 ,.., \alpha_M)$ 是拉格朗日乘子向量，$\alpha_i ≥0$ .
+
+3. 求解计算$\mathbf w$向量的值$\mathbf w^*$.
+   $$
+   \mathbf w^*= \sum\limits_{i=1}^M \alpha^*\ y_i\ \mathbf x_i
+   $$
+
+4. 找到满足$\alpha^*_s > 0$ 对应的支持向量点$(\mathbf {x_s}, y_s )$，从而求解计算$\mathbf b$ 的值$\mathbf {b^*}$.
+   $$
+   \mathbf b^*= \frac{1}{S}\sum\limits_{s=1}^S [ y_s - \mathbf {w^* \cdot x^s}] 
+   $$
+
+5. 由$\mathbf w^*$ 和 $\mathbf {b^*}$ 得到分割超平面 $\mathbf {w^* \cdot x + b^*} = 0$ 和分类决策函数  $h(\mathbf x) =sign(\mathbf {w^Tx + b})$.
+
+
+
+</br>
+
+### 2.2、求解软间隔支持向量机
+
+输入：线性可分训练集$T=\{ (\mathbf x_1 ,y_1) ,(\mathbf x_2 ,y_2), ..., (\mathbf x_n ,y_n) \}$，且$y_i \in \{-1,1\} $。
+
+输出：分割超平面$\mathbf {w^* \cdot x + b^*} = 0$ 。
+
+求解步骤：
+
+1. 构造约束优化问题.
+   $$
+   \min_{\alpha} \ \frac{1}{2} \cdot \sum\limits_{i=1}^M \alpha_i \alpha_j y_i y_j (\mathbf x_i \cdot \mathbf x_j) - \sum\limits_{i=1}^M \alpha_i  \\
+   s.t.  \quad  \sum\limits_{i=1}^M \alpha_iy_i = 0    \\
+   0 ≤ \alpha_i ≤ c ,\  i=1,2,...,M
+   $$
+
+2. 利用SMO算法求解上面的优化问题，得到$ \mathbf {\alpha}$向量的值$\mathbf {\alpha^*}$,$\alpha = (\alpha_1, \alpha_2 ,.., \alpha_M)$ 是拉格朗日乘子向量，$\alpha_i ≥0$ .
+
+3. 求解计算$\mathbf w$向量的值$\mathbf w^*$.
+   $$
+   \mathbf w^*= \sum\limits_{i=1}^M \alpha^*\ y_i\ \mathbf x_i
+   $$
+
+4. 找到满足$0 < \alpha^*_s < c$ 对应的支持向量点$(\mathbf {x_s}, y_s )$，从而求解计算$\mathbf b$ 的值$\mathbf {b^*}$.
+   $$
+   \mathbf b^*= \frac{1}{S}\sum\limits_{s=1}^S [ y_s - \mathbf {w^* \cdot x^s}]
+   $$
+
+5. 由$\mathbf w^*$ 和 $\mathbf {b^*}$ 得到分割超平面 $\mathbf {w^* \cdot x + b^*} = 0$ 和分类决策函数  $h(\mathbf x) =sign(\mathbf {w^Tx + b})$ .
+
+   
+
+
+
+## 3、支持向量机实践
+
+### 3.1、简单支持向量机
+
+通过使用 sklearn.datasets 数据集实现简单的 SVM 。
+
+```python
+%matplotlib inline
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import stats
+import seaborn as sns; sns.set()
+
+# 1、创建模拟数据集
+from sklearn.datasets.samples_generator import make_blobs
+X, y = make_blobs(n_samples=50, centers=2,
+                  random_state=0, cluster_std=0.60)
+plt.scatter(X[:, 0], X[:, 1], c=y, s=50, cmap='autumn');
+```
+![在这里插入图片描述](E:\MardkDown-Books\机器学习\支持向量机 SVM\SVM.assets\20190712225912583-1562944209328.png)
+
+```python
+# 2、可以有多种方法分类
+xfit = np.linspace(-1, 3.5)
+plt.scatter(X[:, 0], X[:, 1], c=y, s=50, cmap='autumn')
+
+for m, b in [(1, 0.65), (0.5, 1.6), (-0.2, 2.9)]:
+    plt.plot(xfit, m * xfit + b, '-k')
+
+plt.xlim(-1, 3.5);
+```
+![在这里插入图片描述](E:\MardkDown-Books\机器学习\支持向量机 SVM\SVM.assets\20190712230002188.png)
+
+SVM 的思想: 假想每一条分割线是有宽度的。在SVM的框架下, 认为最宽的线为最优的分割线
+```python
+# 3、绘制有宽带的分割线
+xfit = np.linspace(-1, 3.5)
+plt.scatter(X[:, 0], X[:, 1], c=y, s=50, cmap='autumn')
+
+for m, b, d in [(1, 0.65, 0.33), (0.5, 1.6, 0.55), (-0.2, 2.9, 0.2)]:
+    yfit = m * xfit + b
+    plt.plot(xfit, yfit, '-k')
+    plt.fill_between(xfit, yfit - d, yfit + d, edgecolor='none',
+                     color='#AAAAAA', alpha=0.4)
+
+plt.xlim(-1, 3.5);
+```
+![在这里插入图片描述](E:\MardkDown-Books\机器学习\支持向量机 SVM\SVM.assets\20190712230104407.png)
+
+训练SVM
+```python
+# 4、使用线性SVM和比较大的 C
+from sklearn.svm import SVC # "Support vector classifier"
+model = SVC(kernel='linear', C=1E10)
+model.fit(X, y)
+```
+
+创建一个显示SVM分割线的函数
+```python
+# 5、定义 SVM 分割线函数
+def plot_svc_decision_function(model, ax=None, plot_support=True):
+    """Plot the decision function for a 2D SVC"""
+    if ax is None:
+        ax = plt.gca()
+    xlim = ax.get_xlim()
+    ylim = ax.get_ylim()
+    
+    x = np.linspace(xlim[0], xlim[1], 30)
+    y = np.linspace(ylim[0], ylim[1], 30)
+    Y, X = np.meshgrid(y, x)
+    xy = np.vstack([X.ravel(), Y.ravel()]).T
+    P = model.decision_function(xy).reshape(X.shape)
+    
+    ax.contour(X, Y, P, colors='k',
+               levels=[-1, 0, 1], alpha=0.5,
+               linestyles=['--', '-', '--'])
+    
+    if plot_support:
+        ax.scatter(model.support_vectors_[:, 0],
+                   model.support_vectors_[:, 1],
+                   s=300, linewidth=1, facecolors='none');
+    ax.set_xlim(xlim)
+    ax.set_ylim(ylim)
+ 
+plt.scatter(X[:, 0], X[:, 1], c=y, s=50, cmap='autumn')
+plot_svc_decision_function(model);
+```
+![在这里插入图片描述](E:\MardkDown-Books\机器学习\支持向量机 SVM\SVM.assets\20190712230459748.png)
+
+<br>
+
+### 3.2、非线性支持向量机
+
+#### 3.2.1、SVM 中使用多项式特征
+
+**(1)、导入数据集**
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn import datasets
+
+X, y = datasets.make_moons()
+plt.scatter(X[y==0,0], X[y==0,1])
+plt.scatter(X[y==1,0], X[y==1,1])
+plt.show()
+```
+
+![1562945329284](E:\MardkDown-Books\机器学习\支持向量机 SVM\SVM.assets\1562945329284.png)
+
+**(2)、通过增加噪声，增大数据集标准差**
+
+```python
+X, y = datasets.make_moons(noise=0.15, random_state=666)
+
+plt.scatter(X[y==0,0], X[y==0,1])
+plt.scatter(X[y==1,0], X[y==1,1])
+plt.show()
+```
+
+![1562945392316](E:\MardkDown-Books\机器学习\支持向量机 SVM\SVM.assets\1562945392316.png)
+
+**(3)、使用多项式核函数的SVM**
+
+```python
+from sklearn.preprocessing import PolynomialFeatures, StandardScaler
+from sklearn.svm import LinearSVC
+from sklearn.pipeline import Pipeline
+
+def PolynomialSVC(degree, C=1.0):
+    return Pipeline([
+        ("poly", PolynomialFeatures(degree=degree)),
+        ("std_scaler", StandardScaler()),
+        ("linearSVC", LinearSVC(C=C))
+    ])
+
+poly_svc = PolynomialSVC(degree=3)
+poly_svc.fit(X, y)
+
+def plot_decision_boundary(model, axis):
+    
+    x0, x1 = np.meshgrid(
+        np.linspace(axis[0], axis[1], int((axis[1]-axis[0])*100)).reshape(-1, 1),
+        np.linspace(axis[2], axis[3], int((axis[3]-axis[2])*100)).reshape(-1, 1),
+    )
+    X_new = np.c_[x0.ravel(), x1.ravel()]
+
+    y_predict = model.predict(X_new)
+    zz = y_predict.reshape(x0.shape)
+
+    from matplotlib.colors import ListedColormap
+    custom_cmap = ListedColormap(['#EF9A9A','#FFF59D','#90CAF9'])
+    
+    plt.contourf(x0, x1, zz, linewidth=5, cmap=custom_cmap)
+```
+
+![1562945495276](E:\MardkDown-Books\机器学习\支持向量机 SVM\SVM.assets\1562945495276.png)
+
+**(4)、使用多项式核函数的SVM**
+
+```python
+from sklearn.svm import SVC
+
+def PolynomialKernelSVC(degree, C=1.0):
+    return Pipeline([
+        ("std_scaler", StandardScaler()),
+        ("kernelSVC", SVC(kernel="poly", degree=degree, C=C))
+    ])
+
+poly_kernel_svc = PolynomialKernelSVC(degree=3)
+poly_kernel_svc.fit(X, y)
+```
+
+![1562945544534](E:\MardkDown-Books\机器学习\支持向量机 SVM\SVM.assets\1562945544534.png)
+
+
+
+### 3.3、SVM 解决回归问题
+
+![1562945884700](E:\MardkDown-Books\机器学习\支持向量机 SVM\SVM.assets\1562945884700.png)
+
+SVM 解决回归问题和解决分类问题的思想正好相反。即SVM解决分类问题希望在margin中的数据点越少越好，而SVM解决回归问题则希望落在margin中的数据点越多越好。
+
+
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+from sklearn import datasets
+from sklearn.model_selection import train_test_split
+from sklearn.svm import LinearSVR
+from sklearn.svm import SVR
+from sklearn.preprocessing import StandardScaler
+from sklearn.pipeline import Pipeline
+
+boston = datasets.load_boston()
+X = boston.data
+y = boston.target
+
+X_train, X_test, y_train, y_test = train_test_split(X, y, random_state=666)
+
+def StandardLinearSVR(epsilon=0.1):
+    return Pipeline([
+        ('std_scaler', StandardScaler()),
+        ('linearSVR', LinearSVR(epsilon=epsilon))
+    ])
+
+svr = StandardLinearSVR()
+svr.fit(X_train, y_train)
+svr.score(X_test, y_test)
+```
+
+> output :  0.6358806887937369
+
+
+
+
+
+---
 
 
 
