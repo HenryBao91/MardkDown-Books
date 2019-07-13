@@ -56,7 +56,7 @@ $$
 
 ### 1.2、感知机学习方法
 
-&#8195;&#8195;感知机模型学习的目的是为了确定参数$\mathbf {w,b}$，所以假设训练集为$T={ (\mathbf x_1,y_1) ,(\mathbf x_2,y_2) ,..., (\mathbf x_2,y_2) }$。
+&#8195;&#8195;感知机模型学习的目的是为了确定参数$\mathbf {w,b}$，所以假设训练集为$T=\{ (\mathbf x_1,y_1) ,(\mathbf x_2,y_2) ,..., (\mathbf x_2,y_2) \}$。
 
 &#8195;&#8195;感知机和支持向量机的重要前提均是 <font color=#FF0000>训练数据集**线性可分**</font>，则感知机学习的目标就是求得一个能够将训练数据集中正负样本完全区分的超平面。
 
@@ -162,9 +162,9 @@ $$
 
 ## 2、支持向量机
 
-&#8195;&#8195;由上述可知感知机模型，即**在数据集线性可分的条件下**，利用分割超平面$\mathbf {w\cdot x} + \mathbf b = 0$ 把样本点划分为两类，通过计算误分类点距离超平面距离总和作为损失函数，使其最小化从而调整超平面，直至所有误分类点被纠正正确后迭代结束。
+&#8195;&#8195;由上述可知感知机模型，即**在数据集线性可分的条件下**，利用分割超平面$\mathbf {w^T \cdot x} + \mathbf b = 0$ 把样本点划分为两类，通过计算误分类点距离超平面距离总和作为损失函数，使其最小化从而调整超平面，直至所有误分类点被纠正正确后迭代结束。
 
-&#8195;&#8195;因为 $\mathbf {w ，b}$ 的取值不同，所以得到的分割超平面也可能不相同，所以感知机模型得到的超平面可能有多个。那么，支持向量机模型就是找到一个最优的分割超平面。
+&#8195;&#8195;因为 $\mathbf {w^T ，b}$ 的取值不同，所以得到的分割超平面也可能不相同，所以感知机模型得到的超平面可能有多个。那么，支持向量机模型就是找到一个最优的分割超平面。
 
 &#8195;&#8195;**SVM模型和感知机模型一样**。<font color=#a0000>**SVM模型的方法是：不仅要让样本点被分割超平面分开，还希望那些离分割超平面最近的点到分割超平面的距离最小。**</font>
 
@@ -181,7 +181,7 @@ $$
 
 输入：线性可分训练集$T=\{ (\mathbf x_1 ,y_1) ,(\mathbf x_2 ,y_2), ..., (\mathbf x_n ,y_n) \}$，且$y_i \in \{-1,1\} $。
 
-输出：分割超平面$\mathbf {w^* \cdot x + b^*} = 0$ 和分类决策函数 $h(\mathbf x) =sign(\mathbf {w^Tx + b})$。
+输出：分割超平面$\mathbf {w^{T* }\cdot x + b^*} = 0$ 和分类决策函数 $h(\mathbf x) =sign(\mathbf {w^Tx + b})$。
 
 求解步骤：
 
@@ -204,7 +204,7 @@ $$
    \mathbf b^*= \frac{1}{S}\sum\limits_{s=1}^S [ y_s - \mathbf {w^* \cdot x^s}] 
    $$
 
-5. 由$\mathbf w^*$ 和 $\mathbf {b^*}$ 得到分割超平面 $\mathbf {w^* \cdot x + b^*} = 0$ 和分类决策函数  $h(\mathbf x) =sign(\mathbf {w^Tx + b})$.
+5. 由$\mathbf w^*$ 和 $\mathbf {b^*}$ 得到分割超平面 $\mathbf {w^* \cdot x + b^*} = 0$ 和分类决策函数  $h(\mathbf x) =sign(\mathbf {w^{T* } + b})$.
 
 
 </br>
@@ -213,7 +213,7 @@ $$
 
 输入：线性可分训练集$T=\{ (\mathbf x_1 ,y_1) ,(\mathbf x_2 ,y_2), ..., (\mathbf x_n ,y_n) \}$，且$y_i \in \{-1,1\} $。
 
-输出：分割超平面$\mathbf {w^* \cdot x + b^*} = 0$ 。
+输出：分割超平面$\mathbf {w^{T* } \cdot x + b^*} = 0$ 。
 
 求解步骤：
 
@@ -236,7 +236,27 @@ $$
    \mathbf b^*= \frac{1}{S}\sum\limits_{s=1}^S [ y_s - \mathbf {w^* \cdot x^s}]
    $$
 
-5. 由$\mathbf w^*$ 和 $\mathbf {b^*}$ 得到分割超平面 $\mathbf {w^* \cdot x + b^*} = 0$ 和分类决策函数  $h(\mathbf x) =sign(\mathbf {w^Tx + b})$ .
+5. 由$\mathbf w^*$ 和 $\mathbf {b^*}$ 得到分割超平面 $\mathbf {w^{T* } \cdot x + b^*} = 0$ 和分类决策函数  $h(\mathbf x) =sign(\mathbf {w^Tx + b})$ .
+
+
+### 2.3、求解非线性支持向量机
+&#8195;&#8195;解决非线性支持向量机的方法：定义一个低纬特征空间到高纬特征空间的映射$\phi$，利用这个映射函数，将所有特征映射到一个更高的维度，让数据线性可分，然后再利用线性方法来优化目标函数，求分离超平面和分类决策函数。即新的优化函数变为：
+$$
+   \min_{\alpha} \ \frac{1}{2} \cdot \sum\limits_{i=1}^M \alpha_i \alpha_j y_i y_j (\phi(\mathbf x_i) \cdot \phi(\mathbf x_j) ) - \sum\limits_{i=1}^M \alpha_i  \\
+   s.t.  \quad  \sum\limits_{i=1}^M \alpha_iy_i = 0    \\
+   0 ≤ \alpha_i ≤ c ,\  i=1,2,...,M
+$$
+
+同理，相应决策函数变为如下：
+$$
+f(\mathbf x) = sign[(\sum\limits_{i=1}^M \alpha^* y_i \mathbf x) \cdot \mathbf x + \mathbf b^*] \\
+= sign\left[ \left( \sum\limits_{i=1}^M \alpha^* y_i K( \mathbf x_i, \mathbf x ) \right) + \mathbf b^* \right] 
+$$
+
+其中，$K( \mathbf x_i, \mathbf x )$ 指核函数，常用核函数如：
+1. 线性核函数：$K( \mathbf x_i, \mathbf x ) =  \mathbf x_i  \cdot \mathbf x_j$
+2. 高斯核函数：$K( \mathbf x_i, \mathbf x ) = exp^{( -\frac{||\mathbf x_i  \cdot \mathbf x_j||^2}{2\delta^2} )}$
+3. 多项式核函数：$K( \mathbf x_i, \mathbf x ) =  [ \gamma (\mathbf x_i  \cdot \mathbf x_j )+ \nu ]^p$
 
 
   </br>
@@ -464,6 +484,89 @@ svr.fit(X_train, y_train)
 svr.score(X_test, y_test)
 ```
  **输出 output :  0.6358806887937369**
+
+
+### 3.4、SVM 实现人脸的分类识别
+&#8195;&#8195; 对输入的人脸图像使用PCA(主成分分析)将图像(看作一维向量)进行了降维处理，然后将降维后的向量作为支持向量机的输入。**PCA降维的目的**可以看作是特征提取, 将图像里面真正对分类有决定性影响的数据提取出来，从而实现支持向量机人脸的分类识别.。
+
+**（1）、导入人脸实例数据集**
+```python
+from sklearn.datasets import fetch_lfw_people
+faces = fetch_lfw_people(min_faces_per_person=60)
+
+# 人脸实例
+fig, ax = plt.subplots(3, 5)
+for i, axi in enumerate(ax.flat):
+    axi.imshow(faces.images[i], cmap='bone')
+    axi.set(xticks=[], yticks=[],
+            xlabel=faces.target_names[faces.target[i]])
+```
+<center><img src="https://img-blog.csdnimg.cn/20190713160722962.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmd6aGVuOTE=,size_16,color_FFFFFF,t_70">
+
+&#8195;&#8195; 每一幅图的尺寸为 [62×47] , 大约 3000 个像素值。
+&#8195;&#8195; 我们可以将整个图像展平为一个长度为3000左右的一维向量, 然后使用这个向量做为特征. 通常更有效的方法是通过预处理提取图像最重要的特征. 一个重要的特征提取方法是PCA(主成分分析), 可以将一副图像转换为一个长度为更短的(150)向量。
+```python
+from sklearn.svm import SVC
+from sklearn.decomposition import PCA
+from sklearn.pipeline import make_pipeline
+pca = PCA(n_components=150, whiten=True, random_state=42)
+svc = SVC(kernel='linear', class_weight='balanced')
+model = make_pipeline(pca, svc)
+```
+
+**（2）、将数据分为训练和测试数据集**
+```python
+from sklearn.model_selection import train_test_split
+Xtrain, Xtest, ytrain, ytest = train_test_split(faces.data, faces.target,
+                                                random_state=42)
+```
+
+**（3）、调参**
+**通过交叉验证寻找最佳的 C (控制间隔的大小)**
+```python
+from sklearn.model_selection import GridSearchCV
+
+param_grid = {'svc__C': [1, 5, 10, 50]}
+grid = GridSearchCV(model, param_grid)
+
+grid.fit(Xtrain, ytrain)
+
+model = grid.best_estimator_
+yfit = model.predict(Xtest)
+```
+
+**（4）、使用训练好的SVM做预测**
+```python
+fig, ax = plt.subplots(4, 6)
+for i, axi in enumerate(ax.flat):
+    axi.imshow(Xtest[i].reshape(62, 47), cmap='bone')
+    axi.set(xticks=[], yticks=[])
+    axi.set_ylabel(faces.target_names[yfit[i]].split()[-1],
+                   color='black' if yfit[i] == ytest[i] else 'red')
+fig.suptitle('Predicted Names; Incorrect Labels in Red', size=14);
+```
+预测结果：
+<center><img src="https://img-blog.csdnimg.cn/20190713161143925.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmd6aGVuOTE=,size_16,color_FFFFFF,t_70">
+
+**（5）、生成报告与混淆矩阵**
+```python
+from sklearn.metrics import classification_report
+print(classification_report(ytest, yfit,
+                            target_names=faces.target_names))
+
+from sklearn.metrics import confusion_matrix
+mat = confusion_matrix(ytest, yfit)
+sns.heatmap(mat.T, square=True, annot=True, fmt='d', cbar=False,
+            xticklabels=faces.target_names,
+            yticklabels=faces.target_names)
+plt.xlabel('true label')
+plt.ylabel('predicted label');
+```
+**报告数据**
+<center><img src="https://img-blog.csdnimg.cn/20190713161322362.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmd6aGVuOTE=,size_16,color_FFFFFF,t_70">
+
+**混淆矩阵**
+<center><img src="https://img-blog.csdnimg.cn/20190713161442494.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmd6aGVuOTE=,size_16,color_FFFFFF,t_70">
 
 </br>
 
