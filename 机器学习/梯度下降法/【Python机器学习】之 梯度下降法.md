@@ -1,4 +1,4 @@
-# <center>梯度下降法</center>
+﻿# <center>梯度下降法</center>
 
 ## 1、梯度下降法
 
@@ -18,11 +18,11 @@
 
   使用梯度下降方法的原因：**很多机器学习的模型是无法直接求到最优解**。
 
-![1563885114058](E:\MardkDown-Books\机器学习\梯度下降法\梯度下降法.assets\1563885114058.png)
+<center><img src="https://img-blog.csdnimg.cn/20190726225039630.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmd6aGVuOTE=,size_16,color_FFFFFF,t_70" >
+
 
 ​		对于上图损失函数来说，在损失函数上任取一点（下图蓝点），可以得到该点的损失函数 $J$ 值和该点的导数。由数学知识可知，如果该点的导数不为0，则该点肯定不在函数的极值点上，导数通常可以写为$\frac{dJ}{d\theta}$。
-
-![1563885900707](E:\MardkDown-Books\机器学习\梯度下降法\梯度下降法.assets\1563885900707.png)
+![在这里插入图片描述](https://img-blog.csdnimg.cn/2019072622525146.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmd6aGVuOTE=,size_16,color_FFFFFF,t_70)
 
 ​		对于该问题，导数代表 $\theta$ 变化时，$J$ 相应的变化。导数可以代表方向，对应 $J$ 增大的方向，由于导数是负值，所以 $J$ 增大的方向应该是在 $\theta$ 轴的负方向上，也就是 $\theta$ 减小的时候。对应的还需要一个  $\theta$ 移动的步长，即 $\eta$ ，梯度下降中一个重要参数是每一步的步长，这取决于超参数学习率。叫做梯度下降法的原因：对于一维的的可以直接求导表征，但是对于多维的需要求各个方向的导数，也就是函数的梯度。
 
@@ -39,23 +39,21 @@
 
 1. 学习率 $\eta$ 太小，则算法需要经过大量迭代才能收敛，这将耗费很长时间。
 
-![1563886481781](E:\MardkDown-Books\机器学习\梯度下降法\梯度下降法.assets\1563886481781.png)
-
-
+<center><img src="https://img-blog.csdnimg.cn/20190726225313767.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmd6aGVuOTE=,size_16,color_FFFFFF,t_70" >
 
 2. 学习率 $\eta$ 太高，则算法可能会发散，值越来越大，最后无法找到好的解决方案。
 
-![1563886552844](E:\MardkDown-Books\机器学习\梯度下降法\梯度下降法.assets\1563886552844.png)
-
+<center><img src="https://img-blog.csdnimg.cn/2019072622550955.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmd6aGVuOTE=,size_16,color_FFFFFF,t_70" >
 
 
 ### 1.2.2、梯度陷阱
 
 ​		对于线性回归算法而言，线性回归模型的 MSE 成本函数恰好是一个凸函数，这意味着连接曲线上任意两个点的线段永远不会跟曲线相交，即不存在局部最小，只存在一个全局最小值。
 
-![1563886936546](E:\MardkDown-Books\机器学习\梯度下降法\梯度下降法.assets\1563886936546.png)
+<center><img src="https://img-blog.csdnimg.cn/20190726225553884.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmd6aGVuOTE=,size_16,color_FFFFFF,t_70" >
 
-​		**并不是对于所有的函数都有唯一的极值点**。
+
+**并不是对于所有的函数都有唯一的极值点**。
 
  解决方法：
 
@@ -66,7 +64,7 @@
 
 ​		即使损失函数是凸函数，但如果不同特征的尺寸差别巨大，如下图，那它可能是一个非常细长的“碗”，图中左边训练集上特征1和特征2具有相同的数值规模，而右边的训练集上，特征1的值则比特征2小得多。
 
-![1563887217478](E:\MardkDown-Books\机器学习\梯度下降法\梯度下降法.assets\1563887217478.png)
+<center><img src="https://img-blog.csdnimg.cn/20190726225634409.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmd6aGVuOTE=,size_16,color_FFFFFF,t_70" >
 
 ​		由此可见，左图的梯度下降法直接走向最小值，可以快速到达。而在右图中，先是沿着与全局最小值方向近乎垂直的方向前进，接下来是一段几乎平坦的尝尝的山谷，最终虽然也能够到达最小值，但是需要花费大量的训练时间。
 
@@ -91,7 +89,8 @@ plt.show()
 
 图像：
 
-![1563887852853](E:\MardkDown-Books\机器学习\梯度下降法\梯度下降法.assets\1563887852853.png)
+<center><img src="https://img-blog.csdnimg.cn/20190726225703575.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmd6aGVuOTE=,size_16,color_FFFFFF,t_70" >
+
 
 ```python
 # 函数导数：
@@ -118,8 +117,7 @@ print(theta)
 print(J(theta))
 ```
 
-> output:
->
+> **output:**
 > > ```python
 > > 2.499891109642585
 > > -0.99999998814289
@@ -146,7 +144,8 @@ plt.show()
 
 绘制图像：
 
-![1563888291454](E:\MardkDown-Books\机器学习\梯度下降法\梯度下降法.assets\1563888291454.png)
+<center><img src="https://img-blog.csdnimg.cn/20190726225744153.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmd6aGVuOTE=,size_16,color_FFFFFF,t_70" >
+
 
 
 
@@ -185,7 +184,8 @@ plot_theta_history()
 
 ​	绘制输出图像（$\theta$ 更加密集）：
 
-![1563888530813](E:\MardkDown-Books\机器学习\梯度下降法\梯度下降法.assets\1563888530813.png)
+<center><img src="https://img-blog.csdnimg.cn/20190726225828138.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmd6aGVuOTE=,size_16,color_FFFFFF,t_70" >
+
 
 2. 增大$\theta$ 观察输出效果：
 
@@ -198,7 +198,9 @@ plot_theta_history()
 
 ​	绘制输出图像（$\theta$ 更加稀疏，幅度更大）：
 
-![1563888697463](E:\MardkDown-Books\机器学习\梯度下降法\梯度下降法.assets\1563888697463.png)
+<center><img src="https://img-blog.csdnimg.cn/20190726225851479.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmd6aGVuOTE=,size_16,color_FFFFFF,t_70" >
+
+
 
 3. 继续增大$\theta$ 观察输出效果：
 
@@ -211,11 +213,12 @@ plot_theta_history()
 
 ​	编译器报错：
 
-![1563888766216](E:\MardkDown-Books\机器学习\梯度下降法\梯度下降法.assets\1563888766216.png)
+<center><img src="https://img-blog.csdnimg.cn/20190726225917392.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmd6aGVuOTE=,size_16,color_FFFFFF,t_70" >
+
 
 修改损失函数和梯度下降法代码，避免报错：
 
-```PYTHON
+```python
 def J(theta):
     try:
         return (theta-2.5)**2 - 1.
@@ -254,13 +257,14 @@ plot_theta_history()
 
 输出图像：
 
-![1563889011407](E:\MardkDown-Books\机器学习\梯度下降法\梯度下降法.assets\1563889011407.png)
+<center><img src="https://img-blog.csdnimg.cn/20190726230018190.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmd6aGVuOTE=,size_16,color_FFFFFF,t_70" >
 
 
 
 ## 3、多元回归中的梯度下降法
 
-![1563974316749](E:\MardkDown-Books\机器学习\梯度下降法\梯度下降法.assets\1563974316749.png)
+<center><img src="https://img-blog.csdnimg.cn/20190726230044311.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmd6aGVuOTE=,size_16,color_FFFFFF,t_70" >
+
 
 ​	对于多元线性回归来说，$\theta$ 需要用向量来表示，代表多个参数；对于最简单的一元线性回归来说，$\theta$ 也包含有两个值，即 $\theta = (\theta_0, \theta_1)$ ，相当于 $y = \theta_0 + \theta_1\cdot x $ 。此时，损失函数为梯度为：
 $$
@@ -269,22 +273,25 @@ $$
 
 ### 3.1、梯度下降法的推导
 
-​	**目标**：使 $\sum\limits^m_{i=1}(y^{(i)} - \hat y^{(i)} )^2 $ 尽可能的小。
+​	**目标**：使 $\sum\limits^m_{i=1}(y^{(i)} - \hat y^{(i)} )^2$  尽可能的小。
 
 ​	其中，$\hat y^{(i)}  = \theta_0 + \theta_1 \mathbf X_1^{(i)} + \theta_2 \mathbf X_2^{(i)} + ... + + \theta_n \mathbf X_n^{(i)}$ 。
 
-​	所以，求解目标可以转换为： $\sum\limits^m_{i=1}(y^{(i)} -  \theta_0 + \theta_1 \mathbf X_1^{(i)} + \theta_2 \mathbf X_2^{(i)} + ... + + \theta_n \mathbf X_n^{(i)} )^2 $ 尽可能小。由于此时求解的变量是 $\theta$ , 所以求导过程中为了直观交换一下顺序，同时把 $\hat y^{(i)}$ 写成向量形式。
+​	所以，求解目标可以转换为： $\sum\limits^m_{i=1}(y^{(i)} -  \theta_0 + \theta_1 \mathbf X_1^{(i)} + \theta_2 \mathbf X_2^{(i)} + ... + + \theta_n \mathbf X_n^{(i)} )^2$  尽可能小。
+	由于此时求解的变量是 $\theta$ , 所以求导过程中为了直观交换一下顺序，同时把 $\hat y^{(i)}$ 写成向量形式。
+
 $$
 \nabla J(\theta) = 
 \begin{pmatrix}
 \frac{\partial J}{\partial \theta_0}   \\
+\\
 \frac{\partial J}{\partial \theta_1}    \\
+\\
 \frac{\partial J}{\partial \theta_2}    \\
 \vdots   \\
 \frac{\partial J}{\partial \theta_n}   \\
 \end{pmatrix}
-= 
-\begin{pmatrix}
+= \begin{pmatrix}
 \sum\limits^m_{i=1}2(y^{(i)} - \mathbf X_b^{(i)}\theta  )\cdot(-1)  \\
 \sum\limits^m_{i=1}2(y^{(i)} - \mathbf X_b^{(i)}\theta  )\cdot(-X_1^{(i)})  \\
 \sum\limits^m_{i=1}2(y^{(i)} - \mathbf X_b^{(i)}\theta  )\cdot(-X_2^{(i)})  \\
@@ -300,7 +307,9 @@ $$
 \sum\limits^m_{i=1}(\mathbf X_b^{(i)}\theta -y^{(i)})\cdot X_n^{(i)}  \\
 \end{pmatrix}
 $$
+
 ​	由于在上述求损失函数梯度公式中，每一项均是求和，所以，损失函数梯度的大小与 m 有关，这显然梯度大小与样本数量有关，这实际是不合理的，实际应该是和梯度无关的，所以将目标函数除以m，得：
+
 $$
 J(\theta) =  \frac{2}{m}\sum\limits^m_{i=1}(y^{(i)} - \hat y^{(i)} )^2
 $$
@@ -311,7 +320,9 @@ $$
 \nabla J(\theta) = 
 \begin{pmatrix}
 \frac{\partial J}{\partial \theta_0}   \\
+\\
 \frac{\partial J}{\partial \theta_1}    \\
+\\
 \frac{\partial J}{\partial \theta_2}    \\
 \vdots   \\
 \frac{\partial J}{\partial \theta_n}   \\
@@ -325,6 +336,8 @@ $$
 \sum\limits^m_{i=1}(\mathbf X_b^{(i)}\theta -y^{(i)})\cdot X_n^{(i)}  \\
 \end{pmatrix}
 $$
+
+
 
 ### 3.2、线性回归梯度下降法
 
@@ -344,19 +357,22 @@ plt.show()
 
 ​	为了可视化的方便，这里 x 是使用的一维数组表示，同时为了方便拓展到多维，将 x 进行reshape 转换成 X 。
 
+> ```python
 > X.shape
->
-> > (100 , 1)
->
+> 
+> (100 , 1)
+>```
+>```python
 > y.shape
->
-> > (100 ,)
+> 
+>  (100 ,)
+>  ```
 
 ​	数据图像：
 
-![1563979764541](E:\MardkDown-Books\机器学习\梯度下降法\梯度下降法.assets\1563979764541.png)
+<center><img src="https://img-blog.csdnimg.cn/20190726230421981.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmd6aGVuOTE=,size_16,color_FFFFFF,t_70" width=70% >
 
-​	
+
 
 ​	**使用梯度下降法训练：**
 
@@ -416,7 +432,7 @@ theta = gradient_descent(X_b, y, initial_theta, eta)
 
 ​	封装梯度下降法代码：
 
-```PYTHON
+```python
 import numpy as np
 from .metrics import r2_score
 
@@ -493,7 +509,6 @@ lin_reg.fit_gd(X, y)
 > > ```python
 > > lin_reg.coef_  = array([ 3.00706277])
 > > ```
->
 > > ```python
 > > lin_reg.intercept_  =  4.021457858204859
 > > ```
@@ -505,10 +520,10 @@ lin_reg.fit_gd(X, y)
 ### 4.1、向量化公式推导
 
 ​	由上可知，梯度下降法计算公式可以进行变形，推导如下：
+
 $$
-\nabla J(\theta) 
-= 
-\frac{2}{m}
+\nabla J(\theta)  
+= \frac{2}{m}
 \begin{pmatrix}
 \sum\limits^m_{i=1}(\mathbf X_b^{(i)}\theta  -y^{(i)})  \\
 \sum\limits^m_{i=1}(\mathbf X_b^{(i)}\theta -y^{(i)})\cdot X_1^{(i)}  \\
@@ -516,8 +531,7 @@ $$
 \vdots   \\
 \sum\limits^m_{i=1}(\mathbf X_b^{(i)}\theta -y^{(i)})\cdot X_n^{(i)}  \\
 \end{pmatrix}
-=
-\frac{2}{m}
+=\frac{2}{m}
 \begin{pmatrix}
 \sum\limits^m_{i=1}(\mathbf X_b^{(i)}\theta -y^{(i)})\cdot X_0^{(i)}   \\
 \sum\limits^m_{i=1}(\mathbf X_b^{(i)}\theta -y^{(i)})\cdot X_1^{(i)}  \\
@@ -525,14 +539,15 @@ $$
 \vdots   \\
 \sum\limits^m_{i=1}(\mathbf X_b^{(i)}\theta -y^{(i)})\cdot X_n^{(i)}  \\
 \end{pmatrix}
-=
-\frac{2}{m} \cdot \mathbf X_b^T \cdot (\mathbf X_b \theta - y)
+=\frac{2}{m} \cdot \mathbf X_b^T \cdot (\mathbf X_b \theta - y)
 $$
-​	其中，$X_0^{(i)} \equiv 1 $ ，对上式进一步化简得：
+​	
+其中，$X_0^{(i)} \equiv 1$ ，对上式进一步化简得：
+
+
 $$
 \nabla J(\theta) 
-=
-( \mathbf X_b^{(1)}\theta -y^{(1)} , \mathbf X_b^{(2)}\theta -y^{(2)}, ..., \mathbf X_b^{(m)}\theta -y^{(m)}) \cdot
+=( \mathbf X_b^{(1)}\theta -y^{(1)} , \mathbf X_b^{(2)}\theta -y^{(2)}, ..., \mathbf X_b^{(m)}\theta -y^{(m)}) \cdot
 \begin{pmatrix}
 \mathbf X_0^{(1)} & \mathbf X_1^{(1)}  & \cdots  & \mathbf X_n^{(1)} \\
 \mathbf X_0^{(2)} & \mathbf X_1^{(2)}  & \cdots  & \mathbf X_n^{(2)} \\
@@ -540,14 +555,16 @@ $$
 \mathbf X_0^{(m)} & \mathbf X_1^{(m)}  & \cdots  & \mathbf X_n^{(m)}
 \end{pmatrix}  \\
 $$
-​	对上式化简并进行转置（转置原因：由于梯度是列向量，但是在 numpy 的计算中不区分，所以进行一下转置），最终可得：
+​	
+	对上式化简并进行转置（转置原因：由于梯度是列向量，但是在 numpy 的计算中不区分，所以进行一下转置），最终可得：
+	
 $$
-\begin{align}
-\nabla J(\theta) \
-& = \frac{2}{m} \cdot {(\mathbf X_b \theta - y)}^T \cdot \mathbf X_b \\
-& = \frac{2}{m} \cdot \mathbf X_b^T \cdot (\mathbf X_b \theta - y) \\
-\end{align}
+\nabla J(\theta) 
+= \frac{2}{m} \cdot {(\mathbf X_b \theta - y)}^T \cdot \mathbf X_b \\
+\\
+= \frac{2}{m} \cdot \mathbf X_b^T \cdot (\mathbf X_b \theta - y) \\
 $$
+
 
 ### 4.2、代码实现
 
@@ -601,9 +618,11 @@ lin_reg2.fit_gd(X_train, y_train)
 
 ​	此时运行程序会报错：
 
-![1564063357613](E:\MardkDown-Books\机器学习\梯度下降法\梯度下降法.assets\1564063357613.png)
+<center><img src="https://img-blog.csdnimg.cn/20190726230955347.png" >
 
-​	通过打印查看数据可以看到，训练的模型的参数都是 nan ：
+
+通过打印查看数据可以看到，训练的模型的参数都是 nan ：
+
 
 ```python
 lin_reg2.coef_
@@ -616,7 +635,7 @@ lin_reg2.coef_
 
 ​	通过打印训练集数据查看下前3行数据：
 
-![1564063722251](E:\MardkDown-Books\机器学习\梯度下降法\梯度下降法.assets\1564063722251.png)
+<center><img src="https://img-blog.csdnimg.cn/20190726231052824.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmd6aGVuOTE=,size_16,color_FFFFFF,t_70" >
 
 ​	由数据可知，训练集中数据样本之间差别太大，有的维度的数据是几百，有的是0.x，所以最终求导的梯度可能也是非常大的，使用默认的 $\eta$ 的步长还是较大，使得最终的训练结果可能还是不收敛的。通过改变 $\eta$ 的值可以验证。
 
@@ -642,7 +661,8 @@ lin_reg2.score(X_test, y_test)
 
 ​	在使用标准方程求解线性回归模型的时候并没有进行数据归一化，这是因为线性回归模型的求解转换成了数学公式的计算，涉及的搜索过程很少，所以不需要。但是在使用梯度下降法时，如果数据数值不在一个维度上将会影响梯度的结果，而梯度的结果再乘以步长 $\eta$ 才是真正每次走的步长，就可能出现每一步太大或太小，就会出现上述结果不收敛或者收敛速度太慢的情况。**所以，<font color='red'>使用梯度下降法之前，最好对数据进行归一化.</font>**
 
-![1564064430435](E:\MardkDown-Books\机器学习\梯度下降法\梯度下降法.assets\1564064430435.png)
+<center><img src="https://img-blog.csdnimg.cn/20190726231120273.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmd6aGVuOTE=,size_16,color_FFFFFF,t_70" >
+
 
 ### 4.3.1、数据归一化梯度下降法
 
@@ -694,7 +714,7 @@ big_reg1 = LinearRegression()
 %time big_reg1.fit_normal(big_X, big_y)
 ```
 
-> ```
+> ```python
 > Wall time: 16.21 s
 > ```
 
@@ -705,7 +725,7 @@ big_reg2 = LinearRegression()
 %time big_reg2.fit_gd(big_X, big_y)
 ```
 
-> ```
+> ```python
 > Wall time: 5.31 s
 > ```
 
@@ -723,12 +743,15 @@ $$
 $$
 ​	**批量梯度下降法**：每一步都使用整批训练数据。所以，面对非常庞大的训练集时，算法会变得非常慢。但是，梯度下降法随特征数量的增加，如对于训练同样的线性回归模型，使用批量梯度下降法要比标准（正规）方程法快的多。
 
-![1564066633597](E:\MardkDown-Books\机器学习\梯度下降法\梯度下降法.assets\1564066633597.png)
+<center><img src="https://img-blog.csdnimg.cn/20190726231210495.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmd6aGVuOTE=,size_16,color_FFFFFF,t_70" >
+
 
 ​	但是，批量梯度下降法的受学习率 $\eta$ 的制约，如上左、右图，学习率太低或者太高都不好。学习率太低最终可以得到最终解，但是需要太久的训练时间；学习率太高，算法容易发散，可能离最终结果越来越远。
 
 ​	要寻找合适的学习率，可以使用网格搜索的方法。但是，需要限制迭代次数，这样网格搜索可以淘汰哪些收敛耗时太长的模型。一个简单的办法，就是在开始时设置一个非常大的迭代次数，当梯度向量的值变得很微小时中断算法，即认为这时梯度下降基本上达到了最小值。
 
+
+</br>
 
 
 ## 6、随机梯度下降（SGD)
@@ -736,10 +759,10 @@ $$
 ### 6.1、随机梯度下降推导
 
 批量梯度下降的主要问题是它要用整个训练集来计算每一步的梯度，所以训练集很大时，算法会特别慢。而随机梯度下降，每一步在训练集中随机选择一个样本点数据，并且仅基于该样本点数据来计算梯度。这样每次迭代都只需要计算很少量的数据。
+
 $$
 \nabla J(\theta) 
-= 
-\frac{2}{m}
+= \frac{2}{m}
 \begin{pmatrix}
 \sum\limits^m_{i=1}(\mathbf X_b^{(i)}\theta -y^{(i)})\cdot X_0^{(i)}   \\
 \sum\limits^m_{i=1}(\mathbf X_b^{(i)}\theta -y^{(i)})\cdot X_1^{(i)}  \\
@@ -747,8 +770,7 @@ $$
 \cdots   \\
 \sum\limits^m_{i=1}(\mathbf X_b^{(i)}\theta -y^{(i)})\cdot X_n^{(i)}  \\
 \end{pmatrix}
-=
-2 \cdot
+=2 \cdot
 \begin{pmatrix}
 (\mathbf X_b^{(i)}\theta -y^{(i)})\cdot X_0^{(i)}   \\
 (\mathbf X_b^{(i)}\theta -y^{(i)})\cdot X_1^{(i)}  \\
@@ -756,10 +778,9 @@ $$
 \cdots   \\
 (\mathbf X_b^{(i)}\theta -y^{(i)})\cdot X_n^{(i)}  \\
 \end{pmatrix}
-
-=
-2 \cdot \mathbf (X_b^{(i)})^T \cdot (\mathbf X_b^{(i)} \theta - y^{(i)})
+=2 \cdot \mathbf (X_b^{(i)})^T \cdot (\mathbf X_b^{(i)} \theta - y^{(i)})
 $$
+
 
 ​	即对 BGD 公式计算每次只取一行样本数据进行计算，**当作搜索的方向**<font color='darkred'>**（并不是实际梯度的方向，因为此时方程已经不是损失函数的梯度）。**</font>
 
@@ -767,7 +788,8 @@ $$
 
 ​	搜索过程如下如所示：
 
-![在这里插入图片描述](E:\MardkDown-Books\机器学习\梯度下降法\梯度下降法.assets\20190722201849160.png)
+<center><img src="https://img-blog.csdnimg.cn/20190726231355927.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmd6aGVuOTE=,size_16,color_FFFFFF,t_70" >
+
 
 ​	所以，对学习率进行改变，得到上图中学习率公式，其中 $a、b$ 相当于随机梯度下降法中的超参数。经验上比较好的选取为： $a=5 ；b=50$ 。这种方法叫做**模拟退火的方法**（类似于冶金时熔化的金属慢慢冷却的退火过程。确定每个迭代学习率的函数叫作学习计划。如果学习率降得太快，可能会陷入局部最小值，甚至是停留在走向最小值的半途中。如果学习率降得太慢，需要太长时间才能跳到差不多最小值附近），最终得：
 $$
@@ -793,17 +815,14 @@ plt.show()
 ```
 
 样本数据可视化：
+<center><img src="https://img-blog.csdnimg.cn/20190726231433963.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmd6aGVuOTE=,size_16,color_FFFFFF,t_70" >
 
-![1564126146525](E:\MardkDown-Books\机器学习\梯度下降法\梯度下降法.assets\1564126146525.png)
 
 1. 使用批量梯度下降法：
-
-   循环终止的条件有两个：
-
+循环终止的条件有两个：
    ①、循环迭代次数 ；
-
    ②、当前损失函数比上一轮减小的值小于设置的阈值$\epsilon$ . 
-
+   
 ```python
 def J(theta, X_b, y):
     try:
@@ -846,7 +865,6 @@ print(theta)
 >     
 > array([2.97614182, 4.01141538])    
 > ```
-
 
 
 2. 使用随机梯度下降法：
@@ -975,7 +993,7 @@ print(lin_reg.coef_)
 print(lin_reg.intercept_)
 ```
 
-> ```
+> ```python
 > lin_reg.coef_ = array([3.99986556])
 > 
 > lin_reg.intercept_ = 3.0042962116349594
@@ -1029,7 +1047,7 @@ sgd_reg = SGDRegressor(n_iter=100)
 sgd_reg.score(X_test_standard, y_test)
 ```
 
-> ```
+> ```python
 > Wall time: 3.99 ms
 > 
 > 0.812414332027749
@@ -1037,15 +1055,23 @@ sgd_reg.score(X_test_standard, y_test)
 
 
 
+## 7、小批量梯度下降法
+
+​	小批量梯度下降法：每一步的梯度计算，既不是基于整个训练集（如批量梯度下降），也不是基于单个样本点（如随机梯度下降），而是基于一小部分随机的样本数据，也就是小批量。相比随机梯度下降，小批量梯度下降的主要优势在于可以从矩阵运算的优化中获得显著的性能提升，特别是需要用到图形处理器时。
+
+​	小批量梯度下降法在参数空间层面的前也不像SGD那样不稳定，特别是批量较大时。所以小批量梯度下降最终会比 SGD 更接近最小值一些。但是另一方面，它可能会受到局部最小值的限制问题。
 
 
-## 7、关于梯度下降法调试
 
- 对于一维而言，函数上某点的梯度（导数），也就是该点切线的斜率。通过在该点正负方向各取相邻的一点，这两点连线的斜率可以近似作为该点切线的斜率。
+## 8、关于梯度下降法调试
 
-![1564467686745](E:\MardkDown-Books\机器学习\梯度下降法\梯度下降法.assets\1564467686745.png)
+### 8.1、调试的推导
 
-这样的方法同样适用于高维的场景，对于 $\theta = (\theta_0 , \theta_1, ..., \theta_n)$ ，其梯度为：$\frac{\part J}{\part \theta} = (\frac{\part J}{\part \theta_0},\frac{\part J}{\part \theta_1}, ... , \frac{\part J}{\part \theta_n})$ 。以对 $\theta_0$ 求导为例，在 $\theta_0$ 左右各取两点：
+​	对于一维而言，函数上某点的梯度（导数），也就是该点切线的斜率。通过在该点正负方向各取相邻的一点，这两点连线的斜率可以近似作为该点切线的斜率。
+
+<center><img src="https://img-blog.csdnimg.cn/20190730223849814.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmd6aGVuOTE=,size_16,color_FFFFFF,t_70" >
+
+这样的方法同样适用于高维的场景，对于 $\theta = (\theta_0 , \theta_1, ..., \theta_n)$ ，其梯度为：$\frac{\partial J}{\partial  \theta} = (\frac{\partial J}{\partial  \theta_0},\frac{\partial J}{\partial  \theta_1}, ... , \frac{\partial  J}{\partial \theta_n})$ 。以对 $\theta_0$ 求导为例，在 $\theta_0$ 左右各取两点：
 $$
 \begin{cases}
 \theta_0^+ = (\theta_0 + \epsilon, \theta_1, ..., \theta_n)  \\
@@ -1055,5 +1081,129 @@ $$
 $$
 所以损失函数 $J$ 对 $\theta_0$ 求导的结果为：
 $$
-\frac{\part J}{\part \theta} = \frac{J(\theta_0^+) - J(\theta_0^-)}{2 \ \epsilon}
+\frac{\partial J}{\partial \theta_0}  \frac{J(\theta_0^+) - J(\theta_0^-)}{2 \ \epsilon}
 $$
+
+以此类推，但是这样求解的时间复杂度非常高，所以这种方法仅仅作为小数据量的调试手段，先调试测试一下大概结果，再通过梯度下降法求解并对比结果正确性。
+
+
+
+### 8.2、梯度的调试
+
+1. 使用的数据：
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+np.random.seed(666)
+X = np.random.random(size=(1000, 10))
+
+true_theta = np.arange(1, 12, dtype=float)  # 真实 theta: 1-11
+
+X_b = np.hstack([np.ones((len(X), 1)), X])    # 在 X 前面加上一列 1
+y = X_b.dot(true_theta) + np.random.normal(size=1000) 
+```
+
+2. 数学方法和调试方法：
+
+```python
+def J(theta, X_b, y):
+    try:
+        return np.sum((y - X_b.dot(theta))**2) / len(X_b)
+    except:
+        return float('inf')
+    
+    
+# 数学方法
+def dJ_math(theta, X_b, y):
+    return X_b.T.dot(X_b.dot(theta) - y ) * 2. / len(y)
+
+# 调试方法
+def dJ_debug(theta, X_b, y, epsilon=0.01):
+    res = np.empty(len(theta))
+    for i in range(len(theta)):
+        theta_1 = theta.copy()
+        theta_1[i] += epsilon
+        theta_2 = theta.copy()
+        theta_2[i] -= epsilon
+        res[i] = (J(theta_1, X_b, y) - J(theta_2, X_b, y)) / (2 * epsilon)
+    return res
+```
+
+3. 分别测试输出：
+
+```python
+X_b = np.hstack([np.ones((len(X), 1)), X])
+initial_theta = np.zeros(X_b.shape[1])  # 初始值设成全0 
+eta = 0.01
+```
+
+- 数学方法求解 	
+
+```python
+%time theta = gradient_descent(dJ_debug, X_b, y, initial_theta, eta)
+print(theta)
+```
+
+> ```python
+> Wall time: 2.84 s
+> ```
+>
+> ```python
+> array([ 1.10059643,  1.9566545 ,  2.82202437,  4.16594877,  5.05120906,
+>         5.93194605,  6.81204783,  7.94520523,  9.0933952 ,  9.99854904,
+>        10.90008725])
+> ```
+
+- 调试方法求解：
+
+```python
+%time theta = gradient_descent(dJ_math, X_b, y, initial_theta, eta)
+print(theta)
+```
+
+> ```python
+> Wall time: 466 ms
+> ```
+>
+> ```python
+> array([ 1.10059643,  1.9566545 ,  2.82202437,  4.16594877,  5.05120906,
+>         5.93194605,  6.81204783,  7.94520523,  9.0933952 ,  9.99854904,
+>        10.90008725])
+> ```
+
+​	通过测试可以看出：
+
+（1）、两种方法最终都能得到正确的结果；
+
+（2）、但是调试的方法耗时比数学梯度下降法求解慢很多；
+
+（3）、调试方法是与损失函数 $J$ 无关的，它适用于所用的函数 .
+
+
+<br>
+
+## 9、更多关于梯度下降法
+
+1. **上述一共总结了三种常用梯度下降法：**
+
+- 批量梯度下降法 Batch Gredient Descent
+- 随机梯度下降法 Stochastic Gredient Descent
+- 小批量梯度下降法 Mini-Batch Gredient Descent
+
+2. **随机的优势：**
+
+- 跳出局部最优解
+- 更快的运行速度
+- 机器学习领域很多算法都要使用随机的特点：随机搜索、随机森林
+
+ 
+
+---
+> 文中实例及参考：
+> + 刘宇波老师《Python入门机器学习》
+> + 《机器学习实战》
+
+---
+
