@@ -455,7 +455,7 @@ $$
         1 & X^{(2)}_1 & X^{(2)}_2 & \cdots & X^{(2)}_2   \\
         \vdots & \vdots & \vdots & \ddots & \vdots   \\
         1 & X^{(m)}_1 & X^{(m)}_2 & \cdots & X^{(m)}_n   \\
-        \end{pmatrix}
+\end{pmatrix}
 $$
 $$
 \hat y = X^{(i)} \cdot \theta

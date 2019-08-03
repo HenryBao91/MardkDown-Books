@@ -278,7 +278,7 @@ $$
 ​	其中，$\hat y^{(i)}  = \theta_0 + \theta_1 \mathbf X_1^{(i)} + \theta_2 \mathbf X_2^{(i)} + ... + + \theta_n \mathbf X_n^{(i)}$ 。
 
 ​	所以，求解目标可以转换为： $\sum\limits^m_{i=1}(y^{(i)} -  \theta_0 + \theta_1 \mathbf X_1^{(i)} + \theta_2 \mathbf X_2^{(i)} + ... + + \theta_n \mathbf X_n^{(i)} )^2$  尽可能小。
-	由于此时求解的变量是 $\theta$ , 所以求导过程中为了直观交换一下顺序，同时把 $\hat y^{(i)}$ 写成向量形式。
+​	由于此时求解的变量是 $\theta$ , 所以求导过程中为了直观交换一下顺序，同时把 $\hat y^{(i)}$ 写成向量形式。
 
 $$
 \nabla J(\theta) = 
@@ -556,8 +556,8 @@ $$
 \end{pmatrix}  \\
 $$
 ​	
-	对上式化简并进行转置（转置原因：由于梯度是列向量，但是在 numpy 的计算中不区分，所以进行一下转置），最终可得：
-	
+​	对上式化简并进行转置（转置原因：由于梯度是列向量，但是在 numpy 的计算中不区分，所以进行一下转置），最终可得：
+​	
 $$
 \nabla J(\theta) 
 = \frac{2}{m} \cdot {(\mathbf X_b \theta - y)}^T \cdot \mathbf X_b \\
@@ -822,7 +822,7 @@ plt.show()
 循环终止的条件有两个：
    ①、循环迭代次数 ；
    ②、当前损失函数比上一轮减小的值小于设置的阈值$\epsilon$ . 
-   
+  
 ```python
 def J(theta, X_b, y):
     try:
