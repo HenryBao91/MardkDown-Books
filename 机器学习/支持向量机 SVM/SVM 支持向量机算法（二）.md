@@ -1,14 +1,42 @@
 # <center>SVM 支持向量机（二）</center>
 
+## 1、支持向量机
+
+​	这样，由于$\mathbf{w,x}$初始值的不同，最后得到的分割超平面也有可能不同，那么一定存在一个最优的超平面，这种方法就是支持向量机。
+
+​	由上述可知感知机模型，即**在数据集线性可分的条件下**，利用分割超平面$\mathbf {w^T \cdot x} + \mathbf b = 0$ 把样本点划分为两类，通过计算误分类点距离超平面距离总和作为损失函数，使其最小化从而调整超平面，直至所有误分类点被纠正正确后迭代结束。
+
+&#8195;&#8195;因为 $\mathbf {w^T ，b}$ 的取值不同，所以得到的分割超平面也可能不相同，所以感知机模型得到的超平面可能有多个，这就是不适定问题。那么，支持向量机模型就是找到一个最优的分割超平面。
+
+![1566397071384](E:\MardkDown-Books\机器学习\支持向量机 SVM\SVM 支持向量机算法（二）.assets\1566397071384.png)
+
+&#8195;&#8195;**SVM模型和感知机模型一样**。<font color=#a0000>**SVM模型的方法是：不仅要让样本点被分割超平面分开，还希望那些离分割超平面最近的点到分割超平面的距离最小。**</font>
+
+&#8195;&#8195;SVM 和 线性分类器对比如下：
+
+<center><img src="https://img-blog.csdnimg.cn/20190713112836366.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmd6aGVuOTE=,size_16,color_FFFFFF,t_70">
 
 
 
+&#8195;&#8195;支持向量机（SVM）是一个功能强大并且全面的机器学习模型，它能够执行线性或非线性分类问题、回归问题，甚至是异常值检测任务。
+
+​		支持向量机分为两种：硬间隔支持向量机和软间隔支持向量机。
+
+​		SVM的思想：不仅要让样本点被分割超平面分开，还要去离分割平面**最近的点**（min）到分割超平面的距离尽可能**远**（max）。这些点称为**支持向量**，即支持向量到决策边界的距离尽可能远。
+
+<center><img src="https://img-blog.csdnimg.cn/20190713112643903.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmd6aGVuOTE=,size_16,color_FFFFFF,t_70" width=60%>
+
+​			决策边界和支持向量关系如下：
+
+![1566398014343](E:\MardkDown-Books\机器学习\支持向量机 SVM\SVM 支持向量机算法（二）.assets\1566398014343.png)
 
 
 
+## 2、硬间隔支持向量机（Hard Margin SVM）
 
+### 2.1、推导
 
-
+ 
 
 &#8195;&#8195;由解析几何的知识，可知，二维平面中，点$(x, y)$到直线$Ax + By +C = 0$的距离为：
 $$
@@ -20,7 +48,8 @@ d = d^{\ '} = \frac{| \mathbf {w^Tx + b} |}{ ||\mathbf w||_2} \quad , \quad ||\m
 $$
 &#8195;&#8195;其中，$||\mathbf w||_2$也叫 “ L2范数 ”，也就是模。
 
-<center><img src="https://img-blog.csdnimg.cn/20190713112643903.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmd6aGVuOTE=,size_16,color_FFFFFF,t_70" width=60%>
+
+
 
 &#8195;&#8195;所以，对于数据集的样本点，有：
 $$
@@ -71,24 +100,11 @@ $$
 
 
 
-&#8195;&#8195;支持向量机（SVM）是一个功能强大并且全面的机器学习模型，它能够执行线性或非线性分类问题、回归问题，甚至是异常值检测任务。
+&#8195;&#8195;
 
 ## 1、支持向量机
 
-&#8195;&#8195;由上述可知感知机模型，即**在数据集线性可分的条件下**，利用分割超平面$\mathbf {w^T \cdot x} + \mathbf b = 0$ 把样本点划分为两类，通过计算误分类点距离超平面距离总和作为损失函数，使其最小化从而调整超平面，直至所有误分类点被纠正正确后迭代结束。
-
-&#8195;&#8195;因为 $\mathbf {w^T ，b}$ 的取值不同，所以得到的分割超平面也可能不相同，所以感知机模型得到的超平面可能有多个。那么，支持向量机模型就是找到一个最优的分割超平面。
-
-&#8195;&#8195;**SVM模型和感知机模型一样**。<font color=#a0000>**SVM模型的方法是：不仅要让样本点被分割超平面分开，还希望那些离分割超平面最近的点到分割超平面的距离最小。**</font>
-
-&#8195;&#8195;SVM 和 线性分类器对比如下：
-
-<center><img src="https://img-blog.csdnimg.cn/20190713112836366.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmd6aGVuOTE=,size_16,color_FFFFFF,t_70">
-
-
-&#8195;&#8195;支持向量机分为两种：硬间隔支持向量机和软间隔支持向量机。
-
-</br>
+&#8195;&#8195;
 
 ### 2.1、求解硬间隔支持向量机
 
