@@ -34,79 +34,257 @@
 
 ## 2、硬间隔支持向量机（Hard Margin SVM）
 
-### 2.1、推导
+### 2.1、数学方法推导
 
- 
+### 2.1.1、点到直线的距离
 
 &#8195;&#8195;由解析几何的知识，可知，二维平面中，点$(x, y)$到直线$Ax + By +C = 0$的距离为：
 $$
-\frac{|Ax + By +C |}{\sqrt{A^2 + B^2}}
+d = \frac{|Ax + By +C |}{\sqrt{A^2 + B^2}}
 $$
-&#8195;&#8195;则，拓展到 n 维空间中，$\mathbf {w^Tx + b} = 0$，点到直线的距离为：
+&#8195;&#8195;则，拓展到 n 维空间中，$\mathbf {wx + b} = 0$，点到直线的距离为：
 $$
-d = d^{\ '} = \frac{| \mathbf {w^Tx + b} |}{ ||\mathbf w||_2} \quad , \quad ||\mathbf w|| = \sqrt{w_1^2 + w_2^2 + ... +w_n^2 }
+d = \frac{| \mathbf {wx + b} |}{ ||\mathbf w||} \quad , \quad ||\mathbf w|| = \sqrt{w_1^2 + w_2^2 + ... +w_n^2 }
 $$
-&#8195;&#8195;其中，$||\mathbf w||_2$也叫 “ L2范数 ”，也就是模。
+&#8195;&#8195;其中，$||\mathbf w||$ 或 $||\mathbf w||_2$也叫 “ L2范数 ”，也就是模。当数据为 n 维时，直线就变成了平面，$\mathbf w$ 可以表示超平面的法向量。
+
+### 2.1.2、超平面的建立
+
+​	对于给定样本点：$D=\{ (x_1,y_1), (x_2,y_2), ... , (x_n,y_n) \} \ , \ y=\{ -1, 1 \}$，这里的 $y$ 是指的样本点的标签，因为 SVM 解决二分类问题，所以只有 ±1 两种标签。
+
+![img](E:\MardkDown-Books\机器学习\支持向量机 SVM\SVM 支持向量机算法（二）.assets\20180819180855676.png)
+
+​	如上图，将两类样本点分开的直线有无数多条，那么 SVM 选择最优的一条直线即上述推导，使离分割超平面最近的点的距离最大，也就是几何间隔最大化。从图中观察可知，中间最粗的黑色直线是当前最好的分割超平面。
+
+### 2.1.3、两种距离
+
+**1.** **函数间隔**
+
+​	考虑样本点求解到超平面的距离公式中，对于同一个超平面而言，距离公式中的分母都是相同的，即$||\mathbf w||$，所以，比较各个样本点到超平面距离的远近，只比较分子即可，即$| \mathbf{w \cdot x + b}|$， 而对于函数值的正负号与类别标签是否一致表示了分类正确性，即$h(\mathbf x) = sign(\mathbf{w \cdot x + b})$的符号。如果 $f$ 与样本点标签 $y$ 同号，则代表分类正确；反之，分类错误。而 $|y| \equiv 1$，所以可以使用 $y(\mathbf{w \cdot x + b})$表示样本点分类正确与否的判断，将该式称为<font color=red>**函数间隔**</font>：
+$$
+\overset{\sim}\gamma_i  = y \cdot (\mathbf{w \cdot x_i + b})
+$$
+
+​	对于数据集D，最终的目的是要选取所有样本点中最小的函数间隔作为整个数据集到超平面的函数间隔。<font color=wcved>目的是为了找到数据集中的某些样本点，这些样本点满足到超平面的距离最近，这些点就是**支持向量**</font>。然后，使这些点到超平面距离最远得到的参数 $\mathbf w$ 所对应的超平面就是最优的超平面。又因为定义的分割超平面$\mathbf{w \cdot x +b = 0}$，所以支持向量距离最近，即对应的函数值 $f(w,x_i,b)=\mathbf{w \cdot x_i +b}$ 最小，因为在分割超平面两侧都有支持向量，所以距离超平面远近和正负号没有关系，所以可以用函数间隔表示，即：
+$$
+\overset{\sim}\gamma = min\ \overset{\sim}\gamma_i \quad , \quad i=1,..,n
+$$
+
+> 函数间隔，表征的是样本点在函数值上和分割超平面函数值（=0）的“远近”
+
+**2.** **几何间隔**
+
+​		函数间隔无法决定所要选择的超平面是哪一个。因为当我们把 $\mathbf{w, b}$ 都扩大2倍，那么**函数间隔 $\overset{\sim}\gamma$（函数值）也会跟着扩大2倍**，但是超平面并没有发生改变，还是原来的超平面。所以需要增加一些某些约束，所以，采用几何间隔。
+
+​		由上可知，几何间隔可以用函数间隔表示：
+$$
+\gamma = \frac{\overset{\sim}\gamma}{||\mathbf w||} \\
+\\
+\overset{\sim}\gamma = \gamma \cdot ||\mathbf w||
+$$
+​		由于几何间隔 $\gamma$ 是支持向量到超平面的距离，满足最小，所以其他样本点到超平面的几何距离都大于等于 $\gamma$ ，即：
+$$
+\frac{y_i \cdot (\mathbf{w \cdot x_i + b})}{||\mathbf w||} ≥ \gamma
+$$
+
+> 几何间隔，表征的是样本点到分割超平面实际距离的远近
+
+### 2.1.3、SVM 求解目标
+
+​	根据 SVM 模型的思想，即需要求解以下优化问题：
+$$
+\begin{aligned}
+& \max\limits_{\mathbf{w, b}} \ \gamma \\
+& s.t. \quad \frac{y_i \cdot (\mathbf{w \cdot x_i + b})}{||\mathbf w||} ≥ \gamma \quad , \quad i=1,2,...,n
+\end{aligned}
+$$
+​	即：
+$$
+\begin{aligned}
+& \max\limits_{\mathbf{w, b}} \ \gamma \\
+\\
+& s.t. \quad y_i \cdot (\mathbf{w \cdot x_i + b}) ≥ \gamma \cdot ||\mathbf w|| \quad , \quad i=1,2,...,n
+\end{aligned}
+$$
+​	上式又等价于：
+$$
+\begin{aligned}
+& \max\limits_{\mathbf{w, b}} \ \frac{\overset{\sim}\gamma}{||\mathbf w|| } \\
+\\
+& s.t. \quad y_i \cdot (\mathbf{w \cdot x_i + b}) ≥ \overset{\sim}\gamma \quad , \quad i=1,2,...,n
+\end{aligned}
+$$
+​	**由于函数间隔的大小取值对最终优化问题不产生影响，因为无论函数间隔取值多少，最终目的是为了寻找最优的$\mathbf{w, b}$。所以为了简单，不妨直接取 $\overset{\sim}\gamma = 1$。**
+
+​	所以上式可进一步变形：
+$$
+\begin{aligned}
+& \max\limits_{\mathbf{w, b}} \ \frac{1}{||\mathbf w|| } \\
+\\
+& s.t. \quad y_i \cdot (\mathbf{w \cdot x_i + b}) ≥ 1 \quad , \quad i=1,2,...,n
+\end{aligned}
+$$
+​	等价于：
+$$
+\begin{aligned}
+& \min\limits_{\mathbf{w, b}} \ \frac{1}{2}\cdot ||\mathbf w||^2 \\
+\\
+& s.t. \quad y_i \cdot (\mathbf{w \cdot x_i + b}) ≥ 1 \quad , \quad i=1,2,...,n
+\end{aligned}
+$$
+​	<font color=darkred>**所以，上式即SVM最终需要优化求解的目标函数。**</font>
+
+​	我们令$\overset{\sim}\gamma = 1$，也就意味着到超平面的距离为1的点都是支持向量，即下图中画圈的点，如下图所示：
+
+![1566482146686](E:\MardkDown-Books\机器学习\支持向量机 SVM\SVM 支持向量机算法（二）.assets\1566482146686.png)
 
 
 
+## 2.2、模型方法推导
+
+​	对于上述数学推导较为复杂，不易理解，根据支持向量机可以直观的从SVM模型思想上进行推导。
+
+<center><img src="https://img-blog.csdnimg.cn/20190713112643903.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmd6aGVuOTE=,size_16,color_FFFFFF,t_70" width=60%>
 
 &#8195;&#8195;所以，对于数据集的样本点，有：
 $$
 \begin{cases}
-\ \frac{| \mathbf {w^Tx + b} |}{ ||\mathbf w||_2} ≥ d  ,\  \forall y^{(i)} = +1  \\
+\ \frac{| \mathbf {w\cdot x + b} |}{ ||\mathbf w||_2} ≥ d  ,\  \forall y^{(i)} = +1  \\
 \\
-\ \frac{| \mathbf {w^Tx + b} |}{ ||\mathbf w||_2} ≥ d  ,\ \forall y^{(i)} = -1  \\
+\ \frac{| \mathbf {w\cdot x + b} |}{ ||\mathbf w||_2} ≥ d  ,\ \forall y^{(i)} = -1  \\
 \end{cases}
 $$
 &#8195;&#8195;将上式分子分母同时除以$d$，可得：
 $$
 \begin{cases}
-\ \frac{| \mathbf {w^Tx + b} |}{ ||\mathbf w||_2d} ≥ 1  ,\  \forall y^{(i)} = +1  \\
+\ \frac{| \mathbf {w\cdot x + b} |}{ ||\mathbf w||d} ≥ 1  ,\  \forall y^{(i)} = +1  \\
 \\
-\ \frac{| \mathbf {w^Tx + b} |}{ ||\mathbf w||_2d} ≤ -1  ,\ \forall y^{(i)} = -1  \\
+\ \frac{| \mathbf {w\cdot x + b} |}{ ||\mathbf w||d} ≤ -1  ,\ \forall y^{(i)} = -1  \\
 \end{cases}
 $$
-&#8195;&#8195;令$\ \mathbf {w^T_d } = \frac{| \mathbf {w^T} |}{ ||\mathbf w||_2d} , \  \mathbf {b_d} = \frac{| \mathbf {b} |}{ ||\mathbf w||_2d}$ ，所以，可得下式：
+&#8195;&#8195;令$\ \mathbf {w_d } = \frac{| \mathbf {w} |}{ ||\mathbf w||d} , \  \mathbf {b_d} = \frac{| \mathbf {b} |}{ ||\mathbf w||d}$ ，所以，可得下式：
 $$
 \begin{cases}
-\ \mathbf {w^T_dx + b_d } ≥ 1  ,\  \forall y^{(i)} = +1  \\
+\ \mathbf {w_dx + b_d } ≥ 1  ,\  \forall y^{(i)} = +1  \\
 \\
-\ \mathbf {w^T_dx + b_d } ≤ -1  ,\ \forall y^{(i)} = -1  \\
+\ \mathbf {w_dx + b_d } ≤ -1  ,\ \forall y^{(i)} = -1  \\
 \end{cases}
 $$
-&#8195;&#8195;不妨令$\mathbf {w = w^T_d } \, \ \mathbf {b = b_d }$ ，所以：
+&#8195;&#8195;不妨令$\mathbf {w = w_d } \, \ \mathbf {b = b_d }$ ，所以：
 $$
 \begin{cases}
-\ \mathbf {w^Tx + b } ≥ 1  ,\  \forall y^{(i)} = +1  \\
+\ \mathbf {w \cdot x + b } ≥ 1  ,\  \forall y^{(i)} = +1  \\
 \\
-\ \mathbf {w^Tx + b } ≤ -1  ,\ \forall y^{(i)} = -1  \\
+\ \mathbf {w \cdot x + b } ≤ -1  ,\ \forall y^{(i)} = -1  \\
 \end{cases}
 $$
-&#8195;&#8195;对于上面公式，可得；
 
-- 对于分类正确的样本点，有 $y_i ( \mathbf{w^Tx + b} ) ≥1 > 0$ 恒成立，即：
-  - $y_i = +1$时，有$\mathbf{w^Tx + b} >0$ ;
-  - $y_i = -1$时，有$\mathbf{w^Tx + b}<0$ 。
-- 对于分类错误的样本点，有 $y_i ( \mathbf{w^Tx + b} ) ≤ -1 < 0$ 恒成立，即:
-  - $y_i = +1$时，有$\mathbf{w^Tx + b}<0$  ;
-  - $y_i = -1$时，有$\mathbf{w^Tx + b}>0$ 。
+&#8195;&#8195;对于公式（6）可得；
+
+- 对于分类正确的样本点，有 $y_i ( \mathbf{w \cdot x + b} ) ≥1 > 0$ 恒成立，即：
+  - $y_i = +1$时，有$\mathbf{w \cdot x  + b} >0$ ;
+  - $y_i = -1$时，有$\mathbf{w \cdot x + b}<0$ 。
+  
+- 对于分类错误的样本点，有 $y_i ( \mathbf{w \cdot x + b} ) ≤ -1 < 0$ 恒成立，即:
+  - $y_i = +1$时，有$\mathbf{ w \cdot x + b}<0$  ;
+  - $y_i = -1$时，有$\mathbf{w \cdot   x + b}>0$ 。
+  
+  所以，对于正确分类的样本点，恒有：$y_i\cdot ( \mathbf {w \cdot x_i + b} ) ≥ 1$
+  
+  所以，可得 SVM 最终优化目标：
+  $$
+  \begin{aligned}
+  & \min\limits_{\mathbf{w, b}} \ \frac{1}{2}\cdot ||\mathbf w||^2 \\
+  \\
+  & s.t. \quad y_i \cdot (\mathbf{w \cdot x_i + b}) ≥ 1 \quad , \quad i=1,2,...,n
+  \end{aligned}
+  $$
+  结论同上。
 
 
 
+## 2.3、硬间隔向量机求解
+
+### 2.3.1、求最优解
+
+​	利用拉个格朗日对偶性，使用求解对偶问题的方法可以得到问题的最优解。使用对偶问题求解的方法是因为更容易求解，且在后面更容易引入核函数。
+
+​	第一步，可以构造拉格朗日函数：
+$$
+\begin{aligned}
+L(\mathbf{w,b},\alpha) &= \frac{1}{2}||\mathbf w||^2 - \sum\limits_{i=1}^N\alpha[y_i(\mathbf{w \cdot x_i + b}) -1 ]   \\
+\end{aligned}
+$$
+​	其中，$\alpha = (\alpha_1 , \alpha_2 ,..., \alpha_N)$ 是拉格朗日乘子向量，$\alpha ≥ 0 ， \  i=1,2,...,N$ 。
+
+​	由拉格朗日对偶性，上述问题的对吼问题是求极大极小问题，即：
+$$
+\max\limits_{\alpha} \min\limits_{\mathbf{w,b}} L(\mathbf{w,b},\alpha)
+$$
+(1)、先求解 $\min\limits_{\mathbf{w,b}} L(\mathbf{w,b},\alpha)$
+
+​	对$\mathbf{w,b}$ 分别求偏导数，并令偏导数等于0，可得：
+$$
+\begin{cases}
+\frac{\partial}{\partial \mathbf w}L(\mathbf{w,b},\alpha) &= \mathbf w - \sum\limits_{i=1}^N\alpha_i y_i \mathbf x_i = 0  \\
+\frac{\partial}{\partial \mathbf b}L(\mathbf{w,b},\alpha) &= \sum\limits_{i=1}^N\alpha_i y_i = 0  
+\end{cases}  \quad\quad
+\Rightarrow
+\begin{cases}
+ \mathbf w = \sum\limits_{i=1}^N\alpha_i y_i \mathbf x_i   \\
+\sum\limits_{i=1}^N\alpha_i y_i = 0  
+\end{cases}
+$$
+​	带入拉格朗日函数，可得：
+$$
+\begin{aligned}
+L(\mathbf{w,b},\alpha) &= \frac{1}{2}||\mathbf w||^2 - \sum\limits_{i=1}^N\alpha_i[y_i(\mathbf{w \cdot x_i + b}) -1 ]   \\
+&= \frac{1}{2}\mathbf w \cdot \sum\limits_{i=1}^N\alpha_i y_i \mathbf x_i   -  \sum\limits_{i=1}^N\alpha_i[y_i(\mathbf{w \cdot x_i + b}) -1 ] \\
+&= -\frac{1}{2}\mathbf w \cdot \sum\limits_{i=1}^N\alpha_i y_i \mathbf x_i   +  \sum\limits_{i=1}^N\alpha_i \\
+&= -\frac{1}{2}(\sum\limits_{i=1}^N\alpha_i y_i \mathbf x_i ) \cdot \sum\limits_{j=1}^N\alpha_j y_j \mathbf x_j   +  \sum\limits_{i=1}^N\alpha_i \\
+&= -\frac{1}{2}\sum\limits_{j=1}^N\ \sum\limits_{i=1}^N\alpha_i \alpha_j y_i y_j (\mathbf {x_i \cdot x_j})   +  \sum\limits_{i=1}^N\alpha_i \\
+\end{aligned}
+$$
+​	所以，最后可得：
+$$
+\min\limits_{\mathbf{w,b}} L(\mathbf{w,b},\alpha) = -\frac{1}{2}\sum\limits_{j=1}^N\ \sum\limits_{i=1}^N\alpha_i \alpha_j y_i y_j \mathbf {x_i \cdot x_j}   +  \sum\limits_{i=1}^N\alpha_i
+$$
+​	从上式可知， $L(\mathbf{w,b},\alpha)$ 的结果只取决于 $(\mathbf {x_i \cdot x_j})$ ，即两个向量的点乘结果。
 
 
 
+​	(2)、然后求解 $\max\limits_{\alpha} \min\limits_{\mathbf{w,b}} L(\mathbf{w,b},\alpha)$ 
+
+​	将第一步求解的结果带入对偶问题  $\max\limits_{\alpha} \min\limits_{\mathbf{w,b}} L(\mathbf{w,b},\alpha)$ ，可得对偶优化问题：
+$$
+\begin{aligned}
+& \max\limits_{\alpha} -\frac{1}{2}\sum\limits_{j=1}^N\ \sum\limits_{i=1}^N\alpha_i \alpha_j y_i y_j \mathbf {x_i \cdot x_j}   +  \sum\limits_{i=1}^N\alpha_i \\
+\\
+& s.t. \quad \sum\limits_{i=1}^N\alpha_i y_i = 0   \quad , \quad \alpha_i ≥ 0 , i=1,2,...,n
+\end{aligned}
+$$
+​	等价于：
+$$
+\begin{aligned}
+& \min\limits_{\alpha} \ \frac{1}{2}\sum\limits_{j=1}^N\ \sum\limits_{i=1}^N\alpha_i \alpha_j y_i y_j \mathbf {x_i \cdot x_j}   +  \sum\limits_{i=1}^N\alpha_i \\
+\\
+& s.t. \quad \sum\limits_{i=1}^N\alpha_i y_i = 0   \quad , \quad \alpha_i ≥ 0 , i=1,2,...,n
+\end{aligned}
+$$
+
+### 2.3.2、求解$\mathbf{w,b}$ 
+
+$$
+\mathbf w^*= \sum\limits_{i=1}^M \alpha^*\ y_i\ \mathbf x_i
+$$
+
+$$
+\mathbf b^*= \frac{1}{S}\sum\limits_{s=1}^S [ y_s - \mathbf {w^* \cdot x^s}]
+$$
 
 
 
-&#8195;&#8195;
-
-## 1、支持向量机
-
-&#8195;&#8195;
-
-### 2.1、求解硬间隔支持向量机
+### 2.4、求解硬间隔支持向量机
 
 输入：线性可分训练集$T=\{ (\mathbf x_1 ,y_1) ,(\mathbf x_2 ,y_2), ..., (\mathbf x_n ,y_n) \}$，且$y_i \in \{-1,1\} $。
 
@@ -117,7 +295,7 @@ $$
 1. 构造约束优化问题.
    $$
    \min_{\alpha} \ \frac{1}{2} \cdot \sum\limits_{i=1}^M \alpha_i \alpha_j y_i y_j (\mathbf x_i \cdot \mathbf x_j) - \sum\limits_{i=1}^M \alpha_i  \\
-   s.t.  \quad  \sum\limits_{i=1}^M \alpha_iy_i = 0  \quad(s.t. 意思是使得...满足...)   \\
+   s.t.  \quad  \sum\limits_{i=1}^M \alpha_iy_i = 0    \\
    \alpha_i ≥ 0 , i=1,2,...,M
    $$
 
@@ -130,65 +308,14 @@ $$
 
 4. 找到满足$\alpha^*_s > 0$ 对应的支持向量点$(\mathbf {x_s}, y_s )$，从而求解计算$\mathbf b$ 的值$\mathbf {b^*}$.
    $$
-   \mathbf b^*= \frac{1}{S}\sum\limits_{s=1}^S [ y_s - \mathbf {w^* \cdot x^s}] 
+   \mathbf b^*= \frac{1}{S}\sum\limits_{s=1}^S [ y_s - \mathbf {w^* \cdot x^s}]
    $$
 
 5. 由$\mathbf w^*$ 和 $\mathbf {b^*}$ 得到分割超平面 $\mathbf {w^* \cdot x + b^*} = 0$ 和分类决策函数  $h(\mathbf x) =sign(\mathbf {w^{T* } + b})$.
 
-
 </br>
 
-### 2.2、求解软间隔支持向量机
 
-输入：线性可分训练集$T=\{ (\mathbf x_1 ,y_1) ,(\mathbf x_2 ,y_2), ..., (\mathbf x_n ,y_n) \}$，且$y_i \in \{-1,1\} $。
-
-输出：分割超平面$\mathbf {w^{T* } \cdot x + b^*} = 0$ 。
-
-求解步骤：
-
-1. 构造约束优化问题.
-   $$
-   \min_{\alpha} \ \frac{1}{2} \cdot \sum\limits_{i=1}^M \alpha_i \alpha_j y_i y_j (\mathbf x_i \cdot \mathbf x_j) - \sum\limits_{i=1}^M \alpha_i  \\
-   s.t.  \quad  \sum\limits_{i=1}^M \alpha_iy_i = 0    \\
-   0 ≤ \alpha_i ≤ c ,\  i=1,2,...,M
-   $$
-
-2. 利用SMO算法求解上面的优化问题，得到$\mathbf {\alpha}$向量的值$\mathbf {\alpha^*}$,$\alpha = (\alpha_1, \alpha_2 ,.., \alpha_M)$ 是拉格朗日乘子向量，$\alpha_i ≥0$ .
-
-3. 求解计算$\mathbf w$向量的值$\mathbf w^*$.
-   $$
-   \mathbf w^*= \sum\limits_{i=1}^M \alpha^*\ y_i\ \mathbf x_i
-   $$
-
-4. 找到满足$0 < \alpha^*_s < c$ 对应的支持向量点$(\mathbf {x_s}, y_s )$，从而求解计算$\mathbf b$ 的值$\mathbf {b^*}$.
-   $$
-   \mathbf b^*= \frac{1}{S}\sum\limits_{s=1}^S [ y_s - \mathbf {w^* \cdot x^s}]
-   $$
-
-5. 由$\mathbf w^*$ 和 $\mathbf {b^*}$ 得到分割超平面 $\mathbf {w^{T* } \cdot x + b^*} = 0$ 和分类决策函数  $h(\mathbf x) =sign(\mathbf {w^Tx + b})$ .
-
-
-### 2.3、求解非线性支持向量机
-&#8195;&#8195;解决非线性支持向量机的方法：定义一个低纬特征空间到高纬特征空间的映射$\phi$，利用这个映射函数，将所有特征映射到一个更高的维度，让数据线性可分，然后再利用线性方法来优化目标函数，求分离超平面和分类决策函数。即新的优化函数变为：
-$$
-   \min_{\alpha} \ \frac{1}{2} \cdot \sum\limits_{i=1}^M \alpha_i \alpha_j y_i y_j (\phi(\mathbf x_i) \cdot \phi(\mathbf x_j) ) - \sum\limits_{i=1}^M \alpha_i  \\
-   s.t.  \quad  \sum\limits_{i=1}^M \alpha_iy_i = 0    \\
-   0 ≤ \alpha_i ≤ c ,\  i=1,2,...,M
-$$
-
-同理，相应决策函数变为如下：
-$$
-f(\mathbf x) = sign[(\sum\limits_{i=1}^M \alpha^* y_i \mathbf x) \cdot \mathbf x + \mathbf b^*] \\
-= sign\left[ \left( \sum\limits_{i=1}^M \alpha^* y_i K( \mathbf x_i, \mathbf x ) \right) + \mathbf b^* \right] 
-$$
-
-其中，$K( \mathbf x_i, \mathbf x )$ 指核函数，常用核函数如：
-1. 线性核函数：$K( \mathbf x_i, \mathbf x ) =  \mathbf x_i  \cdot \mathbf x_j$
-2. 高斯核函数：$K( \mathbf x_i, \mathbf x ) = exp^{( -\frac{||\mathbf x_i  \cdot \mathbf x_j||^2}{2\delta^2} )}$
-3. 多项式核函数：$K( \mathbf x_i, \mathbf x ) =  [ \gamma (\mathbf x_i  \cdot \mathbf x_j )+ \nu ]^p$
-
-
-  </br>
 
 
 ## 3、支持向量机实践
