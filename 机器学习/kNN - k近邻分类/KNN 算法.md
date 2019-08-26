@@ -1,10 +1,12 @@
 # <center>k 近邻算法</center>
 
-&#8195;&#8195;k 近邻（k-Nearset Neighbor，简称 kNN）学习是一种常用的监督学习方法，其工作机制非常简单：给定测试样本，基于某种距离度量找出训练集中与其最靠近的 k 个训练样本，然后基于这 k 个“邻居”的信息来进行观测。通常，在 **分类任务** 中可使用“投票法”，即将这 k 个样本点中出现最多的类别标记作为预测结果；在 **回归任务** 中可使用“平均法”，将这 k 个样本的实值输出标记的平均值作为预测结果；还可以基于距离远近进行加权平均或加权投票，距离越近的样本权重越大。
+&#8195;&#8195;k 近邻（k-Nearset Neighbor，简称 kNN）学习是一种常用的**监督学习**方法，其工作机制非常简单：给定测试样本，基于某种距离度量找出训练集中与其最靠近的 k 个训练样本，然后基于这 k 个“邻居”的信息来进行观测。通常，在 **分类任务** 中可使用“投票法”，即将这 k 个样本点中出现最多的类别标记作为预测结果；在 **回归任务** 中可使用“平均法”，将这 k 个样本的实值输出标记的平均值作为预测结果；还可以基于距离远近进行加权平均或加权投票，距离越近的样本权重越大。
 
 <br/>
 
-## 1、kNN 算法
+## 1、kNN 分类算法
+
+​	K 近邻的思想：对于任意一个新的样本点，可以在 M 个已知类别标签的样本点中选取 K 个与其距离最接近的点作为它的最近邻点，然后统计这 K 个最近邻点的类别标签，采取多数投票表决的方式，即把这 K 个最近邻点中占绝大多数类别的点所对应的类别拿来当做要预测点的类别。
 
 ### 1.1、kNN 算法特点
 
@@ -13,7 +15,7 @@
 - 效果好
 - 可以解释机器学习算法过程中的很多细节问题
 - 更完整的刻画机器学习应用的流程
-- 既可以解决分类问题、也可以解决回归问题
+- 既可以解决**分类问题、也可以解决回归问题**
 
 ### 1.2、距离
 #### 1.2.1 欧拉距离（常用）
@@ -42,10 +44,36 @@
 3. 调整余弦相似度 Adjusted Cosine Similarity
 4. 皮尔森相关系数 Pearson Correlation Coefficient
 5. Jaccard 相关系数 Jaccard Coefficient
+5.  汉明距离：两个字符串中不相同位数的数目
 
 <br/>
 
-### 1.3、kNN 应用实例
+
+
+## 1.3、分类决策规则
+
+​	K 近邻算主要使用的多数表决规则，使用 0-1 损失函数来衡量，误分类的概率为：
+$$
+P(Y ≠ f(X)) = 1- P(Y = f(X))
+$$
+​	其中，$f(X)$ 就是分类决策函数。
+
+​	对于给定的预测样本实例$x_j$，假设最后预测它的分类为$c_r$ ，即 $f(x_j)= c_r$。再假设 $x_j$ 最近邻的 K个训练样本实例 $x_i, \ i=(1,2,..,K)$ ，则误分类概率：
+$$
+L = \frac{1}{K}\sum\limits_{x_i \in N_k}I(y_i ≠ c_r) = 1 -  \frac{1}{K}\sum\limits_{x_i \in N_k}I(y_i = c_r)
+$$
+​	其中，$I$ 为指示函数，即 $I(Ture) = 1,\ I(False) = 0$ 。
+
+​	目标是使用误分类率 L 最小，等价于：
+$$
+max \frac{1}{K}\sum\limits_{x_i \in N_k}I(y_i = c_r)
+$$
+​	所以，误分类率就是训练数据的核心思想，K 近邻里面的多数表决规则等价于使训练数据的经验风险最小化。
+
+
+
+### 1.4、kNN 分类应用实例
+
 - **判断是否为恶性肿瘤**
 
 <center><img src="https://img-blog.csdnimg.cn/20190628154405234.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmd6aGVuOTE=,size_16,color_FAFFFF,t_70">
@@ -60,17 +88,21 @@
 
 <br/>
 
-## 1.3、kNN 算法过程
+## 1.5、kNN 分类算法过程
+
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20190628154516179.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmd6aGVuOTE=,size_16,color_FFFFFF,t_70)
 
-  &#8195;&#8195; 机器学习训练模型的过程通常叫做 fit ，也叫拟合。
+  &#8195;&#8195; 机器学习训练模型的过程通常叫做 **fit** ，也叫拟合。
 &#8195;&#8195; 对于kNN算法训练并没有得到什么模型，可以说kNN是机器学习算法中唯一一个不需要训练过程的算法。也就是说输入样例可以直接输入送个训练数据集，直接找到距离最近的一个点。
 &#8195;&#8195; k近邻算法是非常特殊，可以被认为是没有模型的算法。为了和其他算法统一，可以认为训练数据集就是模型本身。
 &#8195;&#8195;  所以，对于kNN来说，训练集就是模型。
 
 <br/>
 
+
+
 ## 2、kNN 算法分类
+
 &#8195;&#8195;**k 近邻分类算法实现过程：**
 - 输入：训练集$T={ (x_1,y_1) ,(x_2,y_2) ,..., (x_n,y_n)  }$，其中，$x_i=( x^1_i, x^2_i ,..., x^n_i)$为第 i 个训练样本实例，$y_i\in \{ c_i, c_2 ,..., c_r \}$ 为 $x_i$对应的类别标签选定的 K 值。
 - 输出：待预测实例 $x_j$ 所属的类别 $x_j$。
@@ -146,10 +178,10 @@ votes = Counter(topk_y)
 3. 预测：
 
 ```python
-   predict_y = votes.most_common(1)[0][0]
-   
-   # 预测结果
-   predict_y
+predict_y = votes.most_common(1)[0][0]
+
+# 预测结果
+predict_y
 ```
 <img src="https://img-blog.csdnimg.cn/20190628160926831.png " width="800">
 
@@ -177,30 +209,30 @@ votes = Counter(topk_y)
  2.  训练过程：
 
 ```python
-    def euc_dis(instance1, instance2):
-        """
+def euc_dis(instance1, instance2):
+    """
         计算两个样本instance1和instance2之间的欧式距离
         instance1: 第一个样本， array型
         instance2: 第二个样本， array型
         """
-        # TODO
-        dist = np.sqrt(sum((instance1 - instance2)**2))
-        return dist
-        
-     
-    def knn_classify(X, y, testInstance, k):
-        """
+    # TODO
+    dist = np.sqrt(sum((instance1 - instance2)**2))
+    return dist
+
+
+def knn_classify(X, y, testInstance, k):
+    """
         给定一个测试数据testInstance, 通过kNN算法来预测它的标签。 
         X: 训练数据的特征
         y: 训练数据的标签
         testInstance: 测试数据，这里假定一个测试数据 array型
         k: 选择多少个neighbors? 
         """
-        # TODO  返回testInstance的预测标签 = {0,1,2}
-        distances = [euc_dis(x, testInstance) for x in X]
-        kneighbors = np.argsort(distances)[:k]
-        count = Counter(y[kneighbors])
-        return count.most_common()[0][0]
+    # TODO  返回testInstance的预测标签 = {0,1,2}
+    distances = [euc_dis(x, testInstance) for x in X]
+    kneighbors = np.argsort(distances)[:k]
+    count = Counter(y[kneighbors])
+    return count.most_common()[0][0]
 ```
 
 3. 预测：
@@ -463,7 +495,7 @@ $$
 </br>
 
 ### 4.1 数据归一化
-&#8195;&#8195; 在数据进行处理进行解决归一化问题之前，通常需要对数据进行预处理工作，其中一项就是数据归一化。
+&#8195;&#8195; 在数据进行处理进行解决归一化问题之前，通常需要对数据进行预处理工作，其中一项就是**数据归一化**。
  		
 
 **样本间的距离被发现时间所主导**
@@ -659,9 +691,10 @@ $$
 </br>
 
 ### 5.4、kNN 注意点
-&#8195;&#8195; k 近邻有 3 个参数对结果影响比较大：一个是数据归一化；另一个是 k 值的选择，k 一般选择奇数；还有一个是距离的度量方式。
+&#8195;&#8195; k 近邻有 3 个参数对结果影响比较大：**一个是数据归一化；另一个是 k 值的选择，k 一般选择奇数；还有一个是距离的度量方式。**
 &#8195;&#8195; 如果不先对数据进行归一化，那么多个特征的取值范围相差较大时，就会发生距离偏移，最终结果也会受到影响。
      
+
 ---
 **机器学习整体流程：**
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20190629202256244.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmd6aGVuOTE=,size_16,color_FFFFFF,t_70)
