@@ -189,6 +189,37 @@ predict_y
 
 ### 2.2 kNN 三分类的简单实现
 
+> 将数据集划分测试集和训练集方法：
+
+```python
+""" 将数据 X 和 y 按照 test_ratio 分割成 X_train, X_test , y_train , y_test"""
+def train_test_split(X, y , test_ratio=0.2, seed=None ):
+
+    assert X.shape[0] == y.shape[0], \
+        "the size of X must be equal to the size of y."
+    assert 0.0 <= test_ratio <= 1.0, \
+        "test_train must be valid."
+
+    if seed:       # 自定义 种子
+        np.random.seed(seed)
+
+    shuffled_indexs = np.random.permutation(len(X))
+
+    test_size = int( len(X) * test_ratio)
+    test_indexs = shuffled_indexs[:test_size]
+    train_indexs = shuffled_indexs[test_size:]
+
+    X_train = X[train_indexs]
+    y_train = y[train_indexs]
+
+    X_test = X[test_indexs]
+    y_test = y[test_indexs]
+
+    return X_train , X_test , y_train , y_test
+```
+
+
+
 &#8195;&#8195; 采用sklearn数据库，实现三分类问题。
 
  1. 导入训练数据：
@@ -569,9 +600,13 @@ plt.show()
 
 ### 4.2 测试数据归一化
 ![在这里插入图片描述](https://img-blog.csdnimg.cn/20190628161339738.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmd6aGVuOTE=,size_16,color_FFFFFF,t_70)
-&#8195;&#8195; 测试数据是模拟真实环境
-- 真实环境很有可能无法得到所有测试数据的均值和方差
-- 对数据的归一化也是算法的一部分
+
+**注意：归一化公式中对测试数据集的归一化是用测试数据集 减去 <font color=red>训练数据集</font>的均值，再除以<font color=red>训练数据集</font>的标准差，而不是减去 <font color=red>测试数据集</font>的均值，再除以<font color=red>测试数据集</font>的标准差**，原因有以下几点：
+
+- 测试数据是模拟真实环境，有可能实际中来了一个样本，那么对这一个样本是没有办法进行归一化的，因为测试数据集的均值此时就是太本身，相减为0，起不到归一化的目的；
+
+- 真实环境很有可能无法得到所有测试数据的均值和方差；
+- 对数据的归一化也是算法的一部分。
 
 $$
 x_{scale}=\frac{X_{test}-\overline{X_{train}}}{std_{train}}

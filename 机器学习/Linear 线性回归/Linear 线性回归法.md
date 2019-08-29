@@ -66,7 +66,7 @@
 
 ​	**目标**：使上式尽可能的小，结合预测直线方程，可得：
 
-即，使 $$\sum\limits_{i=1}^m (\ y^{(i)}  - ax^{(i)}+b \ )^2$$ 尽可能小，该式也叫损失函数（Loss Function）
+即，使 $$\sum\limits_{i=1}^m (\ y^{(i)}  - ax^{(i)}-b \ )^2$$ 尽可能小，该式也叫损失函数（Loss Function）
 
 > 求最大值的叫 效用函数（Utility Function）
 
@@ -86,33 +86,52 @@
 
 ### 2.2、最小二乘法
 
-**目标：** 使 $$\sum\limits_{i=1}^m (\ y^{(i)}  - ax^{(i)}+b \ )^2$$ 尽可能小
+**目标：** 使 $$\sum\limits_{i=1}^m (\ y^{(i)}  - ax^{(i)}-b \ )^2$$ 尽可能小，对于回归问题，通常采用的策略是使用**最小均方差损失**来面书模型的好坏，**均方误差也叫做平方损失。** 
 
  <font color=#FF0000>典型的最小二乘法问题：**最小误差的平方**</font>
 
-求$$J(a,b)=\sum\limits_{i=1}^m(y^{(i)} - ax^{(i)}  - b)^2$$最小值，采用链式求导法则
+求$$J(a,b)=\sum\limits_{i=1}^m(y^{(i)} - ax^{(i)}  - b)^2$$最小值，即基于**均方误差最小化**来进行模型求解的方法叫做**“最小二乘法”**。在线性回归中，最小二乘法就是试图找到一条直线，使得所有样本到直线上的欧氏距离之后最小。
+
+上述求解 $a , \ b$ 使得 $J(a,b)$ 最小化的过程，称为线性回归模型的最小二乘“参数估计”。
+
+> 最小二乘法应用范围很广，不仅限于线性回归。在线性回归中，$J(a,b)$ 是关于 $a , \ b$ 的凸函数，当关于 $a , \ b$ 的导数均为 0 时，得到 $a , \ b$ 的最优解。
+>
+> 凸函数：在实数集上的函数，可以通过求二阶导数来判断：
+>
+> - 如果二阶导数在区间上非负，则称为凸函数，恒大于0，则称为严格凸函数；
+> - 如果二阶导数在区间上非正，则称为凹函数，恒小于0，则称为严格凹函数；
+
+采用链式求导法则
 $$
 \begin{cases}
 \frac{\partial J(a,b)}{\partial a}= 0  \\
+\\
 \frac{\partial J(a,b)}{\partial b}= 0  \\
 \end{cases}
 $$
 其中：
 $$
-\frac{\partial J(a,b)}{\partial a}= 2\sum\limits_{i=1}^m (\ y^{(i)}  - ax^{(i)}-b \ )(- x^{(i)}) = 0
-$$
-
-$$
-\sum\limits_{i=1}^m (\ y^{(i)}  - ax^{(i)}-b \ )(- x^{(i)}) \\
-= \sum\limits_{i=1}^m (\ y^{(i)}  - a(x^{(i)}) - \hat y + a\overline x \ )x^{(i)}=0
+\begin{aligned}
+\frac{\partial J(a,b)}{\partial a} &= 2\sum\limits_{i=1}^m (\ y^{(i)}  - ax^{(i)}-b \ )(- x^{(i)}) = 0  \\
+&= \sum\limits_{i=1}^m (\ y^{(i)}  - ax^{(i)} - \overline y + a\overline x \ )x^{(i)} \\
+&= \sum\limits_{i=1}^m (\ x^{(i)}y^{(i)} -  x^{(i)}\overline y ) - \sum\limits_{i=1}^m  ( a(x^i)^2  - a\overline x x^{(i)} \ )  \\
+&= \sum\limits_{i=1}^m (\ x^{(i)}y^{(i)} -  x^{(i)}\overline y ) - a\sum\limits_{i=1}^m  ( (x^i)^2  - \overline x x^{(i)} \ ) = 0 \\ 
+\\
+\\
+\frac{\partial J(a,b)}{\partial b} &= 2 (\ mb - \sum\limits_{i=1}^m ( y^{(i)}  -  a \cdot x^{(i)} ) =  0
+\end{aligned}
 $$
 
 最终：
 $$
-a = \frac{\sum\limits_{i=1}^m(x^{(i)}-\overline x)(y^{(i)}-\overline y)}{\sum\limits_{i=1}^m(x^{(i)}-\overline x)^2}
+\begin{aligned}
+a &= \frac{\sum\limits_{i=1}^m(x^{(i)}-\overline x)(y^{(i)}-\overline y)}{\sum\limits_{i=1}^m(x^{(i)}-\overline x)^2}
 \\
-b=\overline y - a\overline x
+\\
+b &= \overline y - a\overline x
+\end{aligned}
 $$
+
 
 
 ### 2.3、简单线性回归实现
