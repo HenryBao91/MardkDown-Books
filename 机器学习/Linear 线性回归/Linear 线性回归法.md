@@ -624,7 +624,7 @@ $$ \theta = (X_b^TX_b)^{-1}X_b^T y $$
 $$
 \alpha ||\mathbf w||_1 \ , \ \alpha ≥ 0
 $$
-Lasso 回归在 sklearn 中是通过 linear_model.Lasso 类实现的。
+Lasso 回归在 sklearn 中是通过 ```linear_model.Lasso``` 类实现的。
 
 
 
@@ -634,15 +634,15 @@ Lasso 回归在 sklearn 中是通过 linear_model.Lasso 类实现的。
 $$
 \alpha ||\mathbf w||_2^2 \ , \ \alpha ≥ 0
 $$
-岭回归在 sklearn 中是通过 linear_model.Ridge类实现的。
+岭回归在 sklearn 中是通过 ```linear_model.Ridge``` 类实现的。
 
 ### 4.3、ElasticNet 回归
 
 ElasticNet 回归（弹性回归网络）是将 L1 和 L2 正则化进行融合，即在基本线性回归中加入了下面的混合正则化项：
 $$
-\alpha\rho ||\mathbf w||_1 +\frac{\alpha(1-\rho)}{2}{||\mathbf w||^2_2} \ , \ \alpha≥0，\rho≥0 
+\alpha\rho ||\mathbf w||_1 +\frac{\alpha(1-\rho)}{2}{||\mathbf w||^2_2} \ , \ \alpha≥0，\rho≥0
 $$
-ElasticNet 回归在 sklearn 中是通过 linear_model.ElasticNet 类实现的。
+ElasticNet 回归在 sklearn 中是通过 ```inear_model.ElasticNet``` 类实现的。
 
 
 
@@ -654,4 +654,3 @@ ElasticNet 回归在 sklearn 中是通过 linear_model.ElasticNet 类实现的�
 >
 > + 贪心学院，[https://www.greedyai.com](https://www.greedyai.com)
 > + 刘宇波老师《Python入门机器学习》
-
