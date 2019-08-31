@@ -614,8 +614,44 @@ $$ \theta = (X_b^TX_b)^{-1}X_b^T y $$
 
 </br>
 
+
+
+## 4、正则化
+
+### 4.1、L1 正则化项 及 Lasso 回归
+
+在sklearn中 Lasso 回归就是在基本的线性回归的基础上加上一个L1正则化项。L1正则化项的主要作用是使各个特征的权重$w_j$尽量接近0，从而在某种程度上得到一种特征变量选择的效果。
+$$
+\alpha ||\mathbf w||_1 \ , \ \alpha ≥ 0
+$$
+Lasso 回归在 sklearn 中是通过 linear_model.Lasso 类实现的。
+
+
+
+### 4.2、L2 正则化项 及 岭回归
+
+在sklearn中 岭回归就是在基本的线性回归的基础上加上一个L2正则化项。L2正则化项的主要作用是使各个特征的权重$w_j$尽量衰减，从而在某种程度上得到一种特征变量选择的效果。
+$$
+\alpha ||\mathbf w||_2^2 \ , \ \alpha ≥ 0
+$$
+岭回归在 sklearn 中是通过 linear_model.Ridge类实现的。
+
+### 4.3、ElasticNet 回归
+
+ElasticNet 回归（弹性回归网络）是将 L1 和 L2 正则化进行融合，即在基本线性回归中加入了下面的混合正则化项：
+$$
+\alpha\rho ||\mathbf w||_1 +\frac{\alpha(1-\rho)}{2}{||\mathbf w||^2_2} \ , \ \alpha≥0，\rho≥0 
+$$
+ElasticNet 回归在 sklearn 中是通过 linear_model.ElasticNet 类实现的。
+
+
+
 ---
 
 > 文中实例参考：
+>
+> - 《机器学习基础》
+>
 > + 贪心学院，[https://www.greedyai.com](https://www.greedyai.com)
 > + 刘宇波老师《Python入门机器学习》
+
