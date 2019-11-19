@@ -13,7 +13,6 @@
 &#8195;	线性回归与之前 kNN 算法区别，即分类问题和回归问题区别：
 
 <center><img src="https://img-blog.csdnimg.cn/20190706175232934.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L2hvbmd6aGVuOTE=,size_16,color_FFFFFF,t_70">
-
 <br/>
 
 ​		在上图左边 kNN 算法，右边线性回归算法。两者在数据上有不同的特征：kNN算法中，横纵坐标均代表样本特征，样本点的颜色代表样本的分类；而线性回归中横坐标代表样本特征，纵坐标代表样本对应的标记值。
@@ -66,7 +65,7 @@
 
 ​	**目标**：使上式尽可能的小，结合预测直线方程，可得：
 
-即，使 $$\sum\limits_{i=1}^m (\ y^{(i)}  - ax^{(i)}-b \ )^2$$ 尽可能小，该式也叫损失函数（Loss Function）
+即，使 $$\sum\limits_{i=1}^m (\ y^{(i)}  - ax^{(i)}-b \ )^2$$ 尽可能小，该式也叫损失函数（Loss Function）。
 
 > 求最大值的叫 效用函数（Utility Function）
 
